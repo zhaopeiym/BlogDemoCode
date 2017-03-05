@@ -59,16 +59,26 @@ namespace 窗体程序
 
         private void button7_Click(object sender, EventArgs e)
         {
-            label1.Text = AsyncHelper.RunSync(() => GetUlrString("https://github.com/"));
+            #region 方式一
+            //label1.Text = AsyncHelper.RunSync(() => GetUlrString("https://github.com/")); 
+            #endregion
+
+            var threadId1 = Thread.CurrentThread.ManagedThreadId;
+            label1.Text = GetUlrString("https://github.com/").Result;
+            var threadId2 = Thread.CurrentThread.ManagedThreadId;
         }
 
         public async Task<string> GetUlrString(string url)
         {
             using (HttpClient http = new HttpClient())
             {
-                return await http.GetStringAsync(url);
+                var threadId1 = Thread.CurrentThread.ManagedThreadId;
+                await http.GetStringAsync(url).ConfigureAwait(false);                
+                var threadId2 = Thread.CurrentThread.ManagedThreadId;
+                //也就是这里能直接操作UI控件了，因为这里不再是UI线程了。
+                return "";
             }
-        }
+        }        
 
         private void button6_Click(object sender, EventArgs e)
         {
@@ -115,7 +125,7 @@ namespace 窗体程序
         }
 
         private async void button8_Click(object sender, EventArgs e)
-        {          
+        {
 
             #region 方式一
             //try
