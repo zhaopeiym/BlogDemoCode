@@ -19,7 +19,7 @@ namespace 窗体程序
     }
 }
 
-
+//编译后的代码（经过的对象重命名）
 internal class MyAsyncTest
 {
     public Task<string> GetUrlStringAsync(HttpClient http, string url, int time)
