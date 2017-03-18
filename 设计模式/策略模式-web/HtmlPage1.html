@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <script type="text/javascript">
+        ////策略计算
+        //var strategies = {
+        //    //返现  exceed：满多少  retreat:返多少  momoney：应付金额
+        //    cashBack: function (exceed, retreat, momoney) {
+        //        if (momoney >= exceed) {
+        //            return (momoney - retreat).toFixed(2);
+        //        }
+        //        return momoney;//返现后实付金额
+        //    },
+        //    //打折 discountRate：折扣率  momoney：应付金额
+        //    rebate: function (discountRate, momoney) {
+        //        return (discountRate * momoney).toFixed(2);//折扣后实付金额
+        //    }
+        //}
+
+        ////上下文
+        //var context = {
+        //    "7.8折": function (price, number) {
+        //        var momoney = price * number;
+        //        return strategies.rebate(0.78, momoney);
+        //    },
+        //    "9.8折": function (price, number) {
+        //        var momoney = price * number;
+        //        return strategies.rebate(0.98, momoney);
+        //    },
+        //    "满300返40": function (price, number) {
+        //        var momoney = price * number;
+        //        return strategies.cashBack(300, 40, momoney);
+        //    },
+        //    "满600返100": function (price, number) {
+        //        var momoney = price * number;
+        //        return strategies.cashBack(600, 100, momoney);
+        //    }
+        //}
+
+        ////计算结果
+        //var calculateBonus = function (level, price, number) {
+        //    return context[level](price, number);
+        //};
+
+        ////调用
+        //console.log(calculateBonus('7.8折', 12, 3));//计算
+        //console.log(calculateBonus('满600返100', 12, 3));//计算
+        //console.log(calculateBonus('满300返40', 2, 23));//计算
+        //console.log(calculateBonus('9.8折', 2, 33));//计算
+
+
+        //--------------------------------------
+
+        //返现  exceed：满多少  retreat:返多少
+        var CashBack = function (exceed, retreat) {
+            this.exceed = exceed;
+            this.retreat = retreat;
+        };
+        //计算方法
+        CashBack.prototype.calculate = function (price, number) {
+            var momoney = price * number;
+            if (momoney >= this.exceed) {
+                return (momoney - this.retreat).toFixed(2);
+            }
+            return momoney;//返现后实付金额
+        }
+
+        //打折 discountRate：折扣率  momoney：应付金额
+        var Rebate = function (discountRate) {
+            this.discountRate = discountRate;
+        };
+        //计算方法
+        Rebate.prototype.calculate = function (price, number) {
+            return (price * number * this.discountRate).toFixed(2);//折扣后实付金额
+        }
+
+        //上下文
+        var Context = function (type) {
+            this.type = type; 
+        }
+        Context.prototype.calculation = function (price, number) {
+            var AmountCalculation;
+            switch (this.type) {
+                case "7.8折":
+                    AmountCalculation = new Rebate(0.78);
+                    break;
+                case "9.8折":
+                    AmountCalculation = new Rebate(0.98);
+                    break;
+                case "满300返40":
+                    AmountCalculation = new CashBack(300, 40);
+                    break;
+                case "满600返100":
+                    AmountCalculation = new CashBack(600, 100);
+                    break;
+            }
+            return AmountCalculation.calculate(price, number);
+        }
+
+          //调用
+        var context = new Context("7.8折");  
+        console.log(context.calculation(12, 3));
+        var context = new Context("9.8折");  
+        console.log(context.calculation(12, 3));//计算
+        var context = new Context("满300返40");  
+        console.log(context.calculation(300, 2));//计算
+        var context = new Context("满600返100");  
+        console.log(context.calculation(300, 3));//计算
+
+    </script>
+</body>
+</html>

@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "单例模式-web", "单例模式\单例模式-web.csproj", "{1DDDBA63-EF70-4CB6-8466-59C3B11D5475}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "单例模式-控制台", "单例模式-控制台\单例模式-控制台.csproj", "{CFCEA9D9-13A6-4BBF-9F4A-B1D407C2BBC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "策略模式-桌面程序", "策略模式-桌面程序\策略模式-桌面程序.csproj", "{5AC1C70C-F9C2-4B9C-91F0-736E7D4F51EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "策略模式-web", "策略模式-web\策略模式-web.csproj", "{B688BE0B-3C6B-4FAD-AEB1-A2CC7B6CA695}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{CFCEA9D9-13A6-4BBF-9F4A-B1D407C2BBC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFCEA9D9-13A6-4BBF-9F4A-B1D407C2BBC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFCEA9D9-13A6-4BBF-9F4A-B1D407C2BBC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AC1C70C-F9C2-4B9C-91F0-736E7D4F51EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AC1C70C-F9C2-4B9C-91F0-736E7D4F51EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AC1C70C-F9C2-4B9C-91F0-736E7D4F51EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AC1C70C-F9C2-4B9C-91F0-736E7D4F51EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B688BE0B-3C6B-4FAD-AEB1-A2CC7B6CA695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B688BE0B-3C6B-4FAD-AEB1-A2CC7B6CA695}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B688BE0B-3C6B-4FAD-AEB1-A2CC7B6CA695}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B688BE0B-3C6B-4FAD-AEB1-A2CC7B6CA695}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
