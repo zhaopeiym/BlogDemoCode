@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "策略模式-桌面程序",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "策略模式-web", "策略模式-web\策略模式-web.csproj", "{B688BE0B-3C6B-4FAD-AEB1-A2CC7B6CA695}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "你必须知道的javascript", "你必须知道的javascript\你必须知道的javascript.csproj", "{B6258F39-1530-45FE-A50E-3A66049C4EB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{B688BE0B-3C6B-4FAD-AEB1-A2CC7B6CA695}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B688BE0B-3C6B-4FAD-AEB1-A2CC7B6CA695}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B688BE0B-3C6B-4FAD-AEB1-A2CC7B6CA695}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6258F39-1530-45FE-A50E-3A66049C4EB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6258F39-1530-45FE-A50E-3A66049C4EB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6258F39-1530-45FE-A50E-3A66049C4EB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6258F39-1530-45FE-A50E-3A66049C4EB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
