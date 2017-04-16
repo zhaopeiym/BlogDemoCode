@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+}
+
+<div>
+    用户名:<input type="text" />
+    密码:<input type="text" />
+    <button type="button">登录</button>
+</div>
+<script src="http://localhost:26756/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+
+    function queryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+
+    $("button").click(function () {
+        debugger
+        var jsonObj = { name: "", passWord: "", backUrl: queryString("backUrl") };
+        $.post("/Home/Login", jsonObj, function (url) {
+            window.location = url;
+        });
+    });
+</script>
