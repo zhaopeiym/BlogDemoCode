@@ -22,3 +22,8 @@
 /sso/SSODemo/sso-client1/obj
 /sso/SSODemo/sso-service/obj
 /sso/SSODemo/sso-client2/obj
+/UnitTestingDemo/packages
+/UnitTestingDemo/Calculate/obj
+/UnitTestingDemo/Calculate/bin
+/UnitTestingDemo/Calculate.Tests/obj
+/UnitTestingDemo/Calculate.Tests/bin
