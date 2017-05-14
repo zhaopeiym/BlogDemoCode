@@ -7,13 +7,6 @@ using System.Threading.Tasks;
 namespace Calculate
 {
 
-    public interface IArithmetic
-    {
-        int Add(int a, int b);
-
-        int Subtract(int a, int b);
-    }
-
     public class Arithmetic
     {
         public int Add(int a, int b)
@@ -24,6 +17,23 @@ namespace Calculate
         public int Subtract(int a, int b)
         {
             return a - b;
+        }
+
+        public virtual bool Compare(int a, int b)
+        {
+            return a - b > 0;
+        }
+
+        private bool PrivateCompare(int a, int b)
+        {
+            return a - b > 0;
+        }
+
+        public int Divide(int a, int b)
+        {
+            if (Compare(a, b))
+                return a / b;
+            return -1;
         }
     }
 }
