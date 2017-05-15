@@ -69,10 +69,13 @@ namespace TestDemo
             this.notiy = notiy;
         }
 
-        public void Create(Student student)
+        public bool Create(Student student)
         {
             studentRepositories.Add(student);
             notiy.Info("新来了一个同学" + student.Name);
+
+            //其他一些逻辑
+            return true;
         }
     }
 
