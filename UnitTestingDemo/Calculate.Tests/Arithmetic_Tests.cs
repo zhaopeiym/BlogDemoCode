@@ -82,9 +82,9 @@ namespace Calculate.Tests
             Assert.True(sub.Divide(1, 2) == -1);
 
             Arithmetic arithmetic = new Arithmetic();
-            var obj = new Microsoft.VisualStudio.TestTools.UnitTesting.PrivateObject(arithmetic);
-            Assert.True((bool)obj.Invoke("PrivateCompare", 3, 2));
-            Assert.False((bool)obj.Invoke("PrivateCompare", 1, 2));            
+            //var obj = new Microsoft.VisualStudio.TestTools.UnitTesting.PrivateObject(arithmetic);
+            //Assert.True((bool)obj.Invoke("PrivateCompare", 3, 2));
+            //Assert.False((bool)obj.Invoke("PrivateCompare", 1, 2));            
         }
 
     }
