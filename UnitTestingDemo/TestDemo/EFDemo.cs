@@ -28,7 +28,12 @@ namespace TestDemo
     }
     #endregion
 
-    public class StudentRepositories
+    public interface IStudentRepositories
+    {
+        void Add(Student model);
+    }
+
+    public class StudentRepositories : IStudentRepositories
     {
         DB db = null;
         public StudentRepositories()
@@ -61,9 +66,16 @@ namespace TestDemo
 
     public class StudentService
     {
-        StudentRepositories studentRepositories;
+        IStudentRepositories studentRepositories;
         Notiy notiy;
-        public StudentService(StudentRepositories studentRepositories, Notiy notiy)
+        public StudentService()
+        {
+        }
+        public StudentService(IStudentRepositories studentRepositories)
+        {
+            this.studentRepositories = studentRepositories;
+        }
+        public StudentService(IStudentRepositories studentRepositories, Notiy notiy)
         {
             this.studentRepositories = studentRepositories;
             this.notiy = notiy;
@@ -72,20 +84,44 @@ namespace TestDemo
         public bool Create(Student student)
         {
             studentRepositories.Add(student);
-            notiy.Info("新来了一个同学" + student.Name);
 
+            return true;
+        }
+
+        public bool CreateAndNotiy(Student student)
+        {
+            studentRepositories.Add(student);
+            bool isNotiyOk = false;
+            try
+            {
+                isNotiyOk = notiy.Info("" + student.Name);//消息通知
+            }
+            catch (Exception)
+            {
+                //记录日志等
+                //.......
+            }
             //其他一些逻辑
+            return isNotiyOk;
+        }
+
+        private bool XXXInit()
+        {
             return true;
         }
     }
 
     public class Notiy
     {
-        public string messg { get; set; }
-        public void Info(string messg)
+        public virtual bool Info(string messg)
         {
-            //发送消息
-            this.messg = messg;
+            //发送消息、邮件发送、短信发送。。。
+            //.........
+            if (string.IsNullOrWhiteSpace(messg))
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
