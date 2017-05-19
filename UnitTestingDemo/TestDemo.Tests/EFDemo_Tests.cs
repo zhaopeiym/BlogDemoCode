@@ -59,6 +59,33 @@ namespace TestDemo.Tests
         }
 
         [Fact]
+        public void Info_Ok_Two()
+        {
+            Notiy notiy = new MockNotiy();
+            var isNotiyOk = notiy.Info("");
+            Assert.True(isNotiyOk);
+        }
+
+        public class MockNotiy: Notiy
+        {
+            public override bool Info(string messg)
+            {
+                return true;
+            }
+        }
+
+        [Fact]
+        public void Info_Ok_Three()
+        {
+            var notiy = new Mock<Notiy>();
+            notiy.Setup(t => t.Info("")).Returns(true);
+            var isNotiyOk = notiy.Object.Info("");
+            Assert.True(isNotiyOk);
+        }
+
+
+
+        [Fact]
         public void Info_No()
         {
             Notiy notiy = new Notiy();

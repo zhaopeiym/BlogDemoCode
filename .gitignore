@@ -32,3 +32,7 @@
 /UnitTestingDemo/TestDemo/bin
 /UnitTestingDemo/TestDemo.Tests/bin
 /UnitTestingDemo/TestDemo.Tests/obj
+/依赖注入/DIDemo/.vs
+/依赖注入/DIDemo/Demo/bin
+/依赖注入/DIDemo/Demo/obj
+/依赖注入/DIDemo/packages
