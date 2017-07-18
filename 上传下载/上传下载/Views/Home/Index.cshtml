@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "文件上传下载";
+}
+
+<div class="row">
+    <div>
+        <div>
+            1、需要post提交
+            2、enctype="multipart/form-data" （传输文件）
+            3、需要提交的表单元素需要设置 name 属性
+        </div>
+        <form action="/Home/SaveFile1" method="post" enctype="multipart/form-data">
+            <input type="file" class="file1" name="file1" />
+            <button type="submit" class="but1">上传</button>
+        </form>
+    </div>
+
+    <div>
+        <div>利用jquery.form.min</div>
+        <form id="form2" action="/Home/SaveFile2" method="post" enctype="multipart/form-data">
+            <input type="file" class="file1" name="file1" />
+            <button type="submit" class="but1">上传1</button>
+            <button type="button" class="but2">上传2</button>
+        </form>
+    </div>
+
+    <div class="divForm"> 
+        <input id="fileinfo" type="file" class="file1 notFormFile" name="file1" />
+        <button type="submit" class="btnNotForm">上传1</button>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/jquery.form.min.js"></script>
+    <script type="text/javascript">
+        //方式2
+        $(function () {
+            $('#form2').ajaxForm({
+                success: function (responseText) {
+                    alert(responseText);
+                }
+            });
+        });
+
+        //方式3
+        $(function () {
+            $(".but2").click(function () {
+                $('#form2').ajaxSubmit({
+                    success: function (responseText) {
+                        alert(responseText);
+                    }
+                });
+            });
+        });
+
+        //方式4
+        $(".btnNotForm").click(function () {   
+            var oMyForm = new FormData();
+            oMyForm.append("userfile", $(".notFormFile")[0].files[0]);    
+            $.ajax({
+                url: "/Home/SaveFile2",
+                type: "POST",
+                data: oMyForm,
+                processData: false,  // 告诉jQuery不要去处理发送的数据
+                contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
+                success: function (responseText) {
+                    alert(responseText);
+                }
+            });           
+        });
+    </script>
+}
