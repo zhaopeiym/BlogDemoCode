@@ -24,9 +24,22 @@
         </form>
     </div>
 
-    <div class="divForm"> 
+    <div class="divForm">
         <input id="fileinfo" type="file" class="file1 notFormFile" name="file1" />
         <button type="submit" class="btnNotForm">上传1</button>
+    </div>
+
+    <div>
+        <input type="file" multiple class="file2" id="file2">
+        <button type="button" class="btnFile2">上传2</button>
+        <div class="result"></div>
+    </div>
+
+
+    <div>
+        <input type="file" multiple class="file3" id="file3">
+        <button type="button" class="btnFile2">分片上传</button>
+        <div class="result"></div>
     </div>
 </div>
 
@@ -55,9 +68,9 @@
         });
 
         //方式4
-        $(".btnNotForm").click(function () {   
+        $(".btnNotForm").click(function () {
             var oMyForm = new FormData();
-            oMyForm.append("userfile", $(".notFormFile")[0].files[0]);    
+            oMyForm.append("userfile", $(".notFormFile")[0].files[0]);
             $.ajax({
                 url: "/Home/SaveFile2",
                 type: "POST",
@@ -67,7 +80,75 @@
                 success: function (responseText) {
                     alert(responseText);
                 }
-            });           
+            });
         });
+
+        //方式5
+        var oFile = document.getElementById('file2');
+        oFile.onchange = function (e) {
+            //创建xhr对象
+            var xhr;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else {
+                xhr = new ActiveXObject('Microsoft.XMLHTTP');
+            };
+            var data = oFile.files[0];
+            //异步接受响应
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        //实际操作
+                        $(".result").html(xhr.responseText);
+                    }
+                }
+            }
+            //发送请求
+            xhr.open('post', '/Home/SaveFile2', true);
+            xhr.setRequestHeader("content-type", data.type);
+            xhr.send(data);
+        }
+
+        //方式6（分片上传）
+        var oFile1 = document.getElementById('file3');
+
+        function upload(file, skip) {
+            var xhr;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else {
+                xhr = new ActiveXObject('Microsoft.XMLHTTP');
+            };
+            var file = oFile1.files[0];
+            var max = (skip + 1) * 1000000;
+            if (file.size <= max) {
+                max = file.size;
+            }
+            var data = file.slice(skip * 1000000, max);
+            //异步接受响应
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        //实际操作
+                        $(".result").html(skip);
+                        if (file.size <= max) {
+                            $(".result").html($(".result").html() + "  ok");
+                            return;
+                        }
+                        upload(file, ++skip);
+                    }
+                }
+            }
+            //发送请求
+            xhr.open('post', '/Home/SaveFile3', true);
+            xhr.setRequestHeader("content-type", file.type);
+            xhr.send(data);
+        }
+
+        oFile1.onchange = function (e) {
+
+            var data = oFile1.files[0];
+            upload(data, 0);
+        }
     </script>
 }
