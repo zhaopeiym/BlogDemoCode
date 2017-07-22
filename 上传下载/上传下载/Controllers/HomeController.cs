@@ -13,13 +13,28 @@ namespace 上传下载.Controllers
 
         public ActionResult SaveFile1()
         {
-            return View(Request.Files.Count.ToString());
+            if (Request.Files.Count > 0)
+            {
+                Request.Files[0].SaveAs(Server.MapPath("~/App_Data/") + Path.GetFileName(Request.Files[0].FileName));
+                return Content("保存成功");
+            }
+            return Content("没有读到文件");
         }
 
         public string SaveFile2()
         {
-            Request.SaveAs(@"D:\test.png", false);
-            return Request.Files.Count.ToString();
+            if (Request.Files.Count > 0)
+            {
+                Request.Files[0].SaveAs(Server.MapPath("~/App_Data/") + Path.GetFileName(Request.Files[0].FileName));
+                return "保存成功";
+            }
+            return "没有读到文件";
+        }
+
+        public string SaveFile4()
+        {
+            Request.SaveAs(Server.MapPath("~/App_Data/SaveFile4.data") + "", false);
+            return "保存成功";
         }
 
         public string SaveFile3()
@@ -30,8 +45,8 @@ namespace 上传下载.Controllers
                 {
                     BinaryReader br = new BinaryReader(Request.InputStream);
                     bw.Write(br.ReadBytes((int)Request.InputStream.Length));
-                } 
-            }          
+                }
+            }
             return Request.Files.Count.ToString();
         }
 

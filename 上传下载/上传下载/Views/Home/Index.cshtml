@@ -2,41 +2,51 @@
     ViewBag.Title = "文件上传下载";
 }
 
+<style type="text/css">
+    div.content {
+        border: 1px dashed #0094ff;
+        margin: 15px;
+        padding: 15px;
+    }
+</style>
+
 <div class="row">
-    <div>
+    <div class="content">
         <div>
-            1、需要post提交
-            2、enctype="multipart/form-data" （传输文件）
-            3、需要提交的表单元素需要设置 name 属性
+            <ul>
+                <li> 1、需要post提交</li>
+                <li> 2、enctype="multipart/form-data" （传输文件）</li>
+                <li> 3、需要提交的表单元素需要设置 name 属性</li>
+            </ul>
         </div>
         <form action="/Home/SaveFile1" method="post" enctype="multipart/form-data">
-            <input type="file" class="file1" name="file1" />
-            <button type="submit" class="but1">上传</button>
+            <input type="file" name="file1" />
+            <button type="submit" class="but1">上传1</button>
         </form>
     </div>
 
-    <div>
+    <div class="content">
         <div>利用jquery.form.min</div>
         <form id="form2" action="/Home/SaveFile2" method="post" enctype="multipart/form-data">
-            <input type="file" class="file1" name="file1" />
-            <button type="submit" class="but1">上传1</button>
-            <button type="button" class="but2">上传2</button>
+            <input type="file" name="file1" />
+            <button type="submit" class="but1">上传2</button>
+            <button type="button" class="but2">上传3</button>
         </form>
     </div>
 
-    <div class="divForm">
-        <input id="fileinfo" type="file" class="file1 notFormFile" name="file1" />
-        <button type="submit" class="btnNotForm">上传1</button>
+    <div class=" content">
+        <input id="fileinfo" type="file" class="notFormFile" />
+        <button type="button" class="btnNotForm">上传4</button>
     </div>
 
-    <div>
-        <input type="file" multiple class="file2" id="file2">
-        <button type="button" class="btnFile2">上传2</button>
+    <div class="content">
+        <input type="file"  id="file4" multiple>
+        <button type="button" class="btnFile2">上传5</button>
         <div class="result"></div>
     </div>
 
 
-    <div>
+    <div class="content">
         <input type="file" multiple class="file3" id="file3">
         <button type="button" class="btnFile2">分片上传</button>
         <div class="result"></div>
@@ -45,8 +55,11 @@
 
 @section scripts{
 
-    <script src="~/Scripts/jquery.form.min.js"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
     <script type="text/javascript">
+        //方式1
+        //直接点击submit提交
+
         //方式2
         $(function () {
             $('#form2').ajaxForm({
@@ -69,12 +82,12 @@
 
         //方式4
         $(".btnNotForm").click(function () {
-            var oMyForm = new FormData();
-            oMyForm.append("userfile", $(".notFormFile")[0].files[0]);
+            var formData = new FormData();//初始化一个FormData对象
+            formData.append("files", $(".notFormFile")[0].files[0]);//将文件塞入FormData
             $.ajax({
                 url: "/Home/SaveFile2",
                 type: "POST",
-                data: oMyForm,
+                data: formData,
                 processData: false,  // 告诉jQuery不要去处理发送的数据
                 contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
                 success: function (responseText) {
@@ -84,29 +97,34 @@
         });
 
         //方式5
-        var oFile = document.getElementById('file2');
+        var oFile = document.getElementById('file4');
         oFile.onchange = function (e) {
-            //创建xhr对象
-            var xhr;
-            if (window.XMLHttpRequest) {
-                xhr = new XMLHttpRequest();
-            } else {
-                xhr = new ActiveXObject('Microsoft.XMLHTTP');
-            };
-            var data = oFile.files[0];
-            //异步接受响应
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        //实际操作
-                        $(".result").html(xhr.responseText);
-                    }
+            $.ajax({
+                url: "/Home/SaveFile4",
+                type: "POST",
+                data: oFile.files[0],
+                processData: false,  // 告诉jQuery不要去处理发送的数据
+                contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
+                success: function (responseText) {
+                    alert(responseText);
                 }
-            }
-            //发送请求
-            xhr.open('post', '/Home/SaveFile2', true);
-            xhr.setRequestHeader("content-type", data.type);
-            xhr.send(data);
+            });;
+            //if (window.XMLHttpRequest) {
+            //    xhr = new XMLHttpRequest();
+            //} else {soft.XMLHTTP');
+            //};
+            //var data = oFile.files[0];
+            ////异步接受响应
+            //xhr.onreadystatechange = function () {
+            //    if (xhr.readyState == 4) {
+            //        if (xhr.status ==          //            $(".result").html(xhr.responseText);
+            //        }
+            //    }
+            //}
+            ////发送请求
+            //xhr.open('post', '/Home/SaveFile2', true);
+            //xhr.setRequestHeader("content-type", data.type);
+            //xhr.send(data);
         }
 
         //方式6（分片上传）

@@ -116,7 +116,8 @@
 	 * @param	{string}		dataType	ajax dataType
 	 * @param	{function}		onSuccess	ajax success callback function
 	 */
-	$.fn.ajaxSubmit = function(options, data, dataType, onSuccess) {
+    $.fn.ajaxSubmit = function (options, data, dataType, onSuccess) {
+        debugger
 		// fast fail if nothing selected (http://dev.jquery.com/ticket/2752)
 		if (!this.length) {
 			log('ajaxSubmit: skipping submit process - no element selected');
