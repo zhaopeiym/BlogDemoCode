@@ -40,16 +40,19 @@
     </div>
 
     <div class="content">
-        <input type="file"  id="file4" multiple>
-        <button type="button" class="btnFile2">上传5</button>
-        <div class="result"></div>
+        <input type="file" id="file5">
+        <button type="button" class="btnFile5">上传5</button>
     </div>
 
 
     <div class="content">
-        <input type="file" multiple class="file3" id="file3">
-        <button type="button" class="btnFile2">分片上传</button>
+        <input type="file" id="file6" multiple>
+        <button type="button" class="btnFile6">分片上传6</button>
         <div class="result"></div>
+    </div>
+
+    <div class="content">
+        <textarea class="divFile7" style="min-width:800px;height:150px" placeholder="请将文件拖拽或直接粘贴到这里"></textarea>
     </div>
 </div>
 
@@ -97,76 +100,95 @@
         });
 
         //方式5
-        var oFile = document.getElementById('file4');
-        oFile.onchange = function (e) {
+        $(".btnFile5").click(function () {
             $.ajax({
                 url: "/Home/SaveFile4",
                 type: "POST",
-                data: oFile.files[0],
+                data: $("#file5")[0].files[0],
                 processData: false,  // 告诉jQuery不要去处理发送的数据
                 contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
                 success: function (responseText) {
                     alert(responseText);
                 }
-            });;
-            //if (window.XMLHttpRequest) {
-            //    xhr = new XMLHttpRequest();
-            //} else {soft.XMLHTTP');
-            //};
-            //var data = oFile.files[0];
-            ////异步接受响应
-            //xhr.onreadystatechange = function () {
-            //    if (xhr.readyState == 4) {
-            //        if (xhr.status ==          //            $(".result").html(xhr.responseText);
-            //        }
-            //    }
-            //}
-            ////发送请求
-            //xhr.open('post', '/Home/SaveFile2', true);
-            //xhr.setRequestHeader("content-type", data.type);
-            //xhr.send(data);
-        }
+            });
+        });
 
-        //方式6（分片上传）
-        var oFile1 = document.getElementById('file3');
-
-        function upload(file, skip) {
-            var xhr;
-            if (window.XMLHttpRequest) {
-                xhr = new XMLHttpRequest();
-            } else {
-                xhr = new ActiveXObject('Microsoft.XMLHTTP');
-            };
-            var file = oFile1.files[0];
-            var max = (skip + 1) * 1000000;
-            if (file.size <= max) {
-                max = file.size;
-            }
-            var data = file.slice(skip * 1000000, max);
-            //异步接受响应
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        //实际操作
-                        $(".result").html(skip);
-                        if (file.size <= max) {
-                            $(".result").html($(".result").html() + "  ok");
+        //方式6(分片上传)
+        $(".btnFile6").click(function () {
+            var upload = function (file, skip) {
+                var formData = new FormData();//初始化一个FormData对象
+                var blockSize = 1000000;//每块的大小
+                var nextSize = Math.min((skip + 1) * blockSize, file.size);//读取到结束位置
+                var fileData = file.slice(skip * blockSize, nextSize);//截取 部分文件 块
+                formData.append("file", fileData);//将 部分文件 塞入FormData
+                formData.append("fileName", file.name);//保存文件名字
+                $.ajax({
+                    url: "/Home/SaveFile6",
+                    type: "POST",
+                    data: formData,
+                    processData: false,  // 告诉jQuery不要去处理发送的数据
+                    contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
+                    success: function (responseText) {
+                        $(".result").html("已经上传了" + (skip + 1) + "块文件");
+                        if (file.size <= nextSize) {//如果上传完成，则跳出继续上传
+                            alert("上传完成");
                             return;
                         }
-                        upload(file, ++skip);
+                        upload(file, ++skip);//递归调用
                     }
+                });
+            };
+
+            var file = $("#file6")[0].files[0];
+            upload(file, 0);
+        });
+
+        //方式7(拖拽)
+        $(".divFile7")[0].ondrop = function (event) {
+
+            event.preventDefault();//不要执行与事件关联的默认动作
+            var files = event.dataTransfer.files;//获取拖上来的文件
+
+            //以下代码不变
+            var formData = new FormData();//初始化一个FormData对象
+            formData.append("files", files[0]);//将文件塞入FormData
+            $.ajax({
+                url: "/Home/SaveFile2",
+                type: "POST",
+                data: formData,
+                processData: false,  // 告诉jQuery不要去处理发送的数据
+                contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
+                success: function (responseText) {
+                    $(".divFile7").val($(".divFile7").val() + "  " + files[0].name);
+                    alert(responseText);
                 }
+            });
+        };
+
+        //方式8(粘贴 限图片格式)
+        $(".divFile7")[0].onpaste = function (event) {
+            event.preventDefault();//不要执行与事件关联的默认动作
+            var clipboard = event.clipboardData.items[0];//剪贴板数据
+            if (clipboard.kind == 'file' || clipboard.type.indexOf('image') > -1) {//判断是图片格式
+                var imageFile = clipboard.getAsFile();//获取文件
+
+                //以下代码不变
+                var formData = new FormData;
+                formData.append('files', imageFile);
+                formData.append('fileName', "temp.png");//这里给文件命个名（或者直接在后台保存的时候命名）
+                $.ajax({
+                    url: "/Home/SaveFile8",
+                    type: "POST",
+                    data: formData,
+                    processData: false,  // 告诉jQuery不要去处理发送的数据
+                    contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
+                    success: function (responseText) {
+                        $(".divFile7").val($(".divFile7").val() + "  temp.png");
+                        alert(responseText);
+                    }
+                });
             }
-            //发送请求
-            xhr.open('post', '/Home/SaveFile3', true);
-            xhr.setRequestHeader("content-type", file.type);
-            xhr.send(data);
-        }
+        };
 
-        oFile1.onchange = function (e) {
-
-            var data = oFile1.files[0];
-            upload(data, 0);
-        }
     </script>
 }

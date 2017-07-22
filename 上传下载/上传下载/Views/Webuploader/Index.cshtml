@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="btns">
+    <div id="picker">选择文件</div>
+    <button id="ctlBtn" class="btn btn-default">开始上传</button>
+</div>
+
+
+
+@section scripts{
+    <!--引用webuploader的js和css-->
+    <link href="~/Scripts/webuploader-0.1.5/webuploader.css" rel="stylesheet" />
+    <script src="~/Scripts/webuploader-0.1.5/webuploader.js"></script>
+    <script type="text/javascript">
+
+        //简单上传
+        //var uploader = WebUploader.create({
+
+        //    // (如果是新浏览器 可以不用 flash)
+        //    //swf: '/Scripts/webuploader-0.1.5/Uploader.swf',
+
+        //    // 文件接收服务端。
+        //    server: '/Webuploader/SaveFile',
+
+        //    // 选择文件的按钮。可选。
+        //    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        //    pick: '#picker'
+        //});
+
+        //$("#ctlBtn").click(function () {
+        //    uploader.upload();
+        //});
+
+        //uploader.on('uploadSuccess', function (file) {
+        //    alert("上传成功");
+        //});
+
+        //分片上传
+        //var uploader = WebUploader.create({
+        ////兼容老版本IE
+        //swf: '/Scripts/webuploader-0.1.5/Uploader.swf',
+        //// 文件接收服务端。
+        //server: '/Webuploader/SveFile2',
+        //// 开起分片上传。
+        //chunked: true,
+        ////分片大小
+        //chunkSize: 1000000,
+        ////上传并发数
+        //threads: 1,
+        //// 选择文件的按钮。
+        //pick: '#picker'
+        //});
+
+        //// 点击触发上传
+        //$("#ctlBtn").click(function () {
+        //uploader.upload();
+        //});
+
+        //uploader.on('uploadSuccess', function (file) {
+        //alert("上传成功");
+        //});
+
+
+        //并发上传（多线程上传）
+        var uploader = WebUploader.create({
+            //兼容老版本IE
+            swf: '/Scripts/webuploader-0.1.5/Uploader.swf',
+            // 文件接收服务端。
+            server: '/Webuploader/SveFile3',
+            // 开起分片上传。
+            chunked: true,
+            //分片大小
+            chunkSize: 1000000,
+            //上传并发数
+            threads: 10,
+            // 选择文件的按钮。
+            pick: '#picker'
+        });
+
+        // 点击触发上传
+        $("#ctlBtn").click(function () {
+            uploader.upload();
+        });
+
+        uploader.on('uploadSuccess', function (file) {
+            //上传完成后，给后台发送一个合并文件的命令
+            $.ajax({
+                url: "/Webuploader/FileMerge",
+                data: { "fileName": file.name },
+                type: "post",
+                success: function () {
+                    alert("上传成功");
+                }
+            });
+        });
+
+    </script>
+}
