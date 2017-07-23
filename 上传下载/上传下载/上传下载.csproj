@@ -141,6 +141,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\FileDownloadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\WebuploaderController.cs" />
     <Compile Include="Global.asax.cs">
@@ -149,18 +150,20 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\temp.txt" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="HtmlPage1.html" />
+    <Content Include="test.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="App_Data\大话设计模式.pdf" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -206,9 +209,10 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Webuploader\Index.cshtml" />
     <Content Include="Scripts\webuploader-0.1.5\README.md" />
+    <Content Include="Views\FileDownload\Index.cshtml" />
+    <Content Include="App_Data\新建文件夹.rar" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

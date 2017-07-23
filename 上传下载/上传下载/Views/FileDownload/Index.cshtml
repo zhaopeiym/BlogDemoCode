@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    div.content {
+        border: 1px dashed #0094ff;
+        margin: 15px;
+        padding: 15px;
+    }
+</style>
+
+<div>
+    <div class="content">
+        <a href="~/test.txt">下载</a>
+        <span>a标签这种方式简单粗暴，但不安全。谁都可以下载，甚至被扫描。</span>
+    </div>
+
+    <div class="content">
+        <input type="button" class="btnDownload2" value="下载2" />
+        <span>此方法下载大文件容易报错，内存溢出（不推荐），如果是发布到了服务器，容易耗内存，搞挂服务器。</span>
+    </div>
+
+    <div class="content">
+        <input type="button" class="btnDownload3" value="下载3" />
+        <span>此方法下载大文件容易报错，内存溢出（不推荐），如果是发布到了服务器，容易耗内存，搞挂服务器。（比上面的方法还恐怖）</span>
+    </div>
+
+    <div class="content">
+        <input type="button" class="btnDownload4" value="下载4" />
+        <span>分块下载 </span>
+    </div>
+
+    <div class="content">
+        <input type="button" class="btnDownload5" value="下载5" />
+        <span>微软提供的TransmitFile</span>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(".btnDownload2").click(function () {
+            location.href = "/FileDownload/FileDownload2";
+        });
+
+        $(".btnDownload3").click(function () {
+            location.href = "/FileDownload/FileDownload3";
+        });
+
+        $(".btnDownload4").click(function () {
+            location.href = "/FileDownload/FileDownload4";
+        });
+
+        $(".btnDownload5").click(function () {
+            location.href = "/FileDownload/FileDownload5";
+        });
+
+    </script>
+}
