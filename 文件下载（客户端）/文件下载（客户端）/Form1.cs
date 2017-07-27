@@ -39,8 +39,8 @@ namespace 文件下载_客户端_
                 }));
                 using (HttpClient http = new HttpClient())
                 {
-                    var response = await http.GetAsync("http://localhost:813/FileDownload/FileDownload5");
-                    var maxLength = response.Content.Headers.ContentLength;
+                    var response = await http.GetAsync("http://localhost:813/FileDownload/FileDownload5",HttpCompletionOption.ResponseHeadersRead);
+                    var maxLength = response.Content.Headers.ContentLength; //response.Content.Headers.ContentLength;
 
                     float count = 0;
                     using (var stream = await response.Content.ReadAsStreamAsync())
@@ -107,18 +107,24 @@ namespace 文件下载_客户端_
 
                     using (HttpClient http = new HttpClient())
                     {
-                        var request = new HttpRequestMessage { RequestUri = new Uri("http://localhost:813/FileDownload/FileDownload5") };
-                        request.Headers.Range = new RangeHeaderValue(RangeBegin, null);
-                        var response = await http.SendAsync(request);
-                        var maxLength = response.Content.Headers.ContentLength;
+                        //http://localhost:813/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B92.rar
+                        var url = "http://localhost:813/FileDownload/FileDownload5";
+                        //var request = new HttpRequestMessage { RequestUri = new Uri(url) };//
+                        //request.Headers.Range = new RangeHeaderValue(RangeBegin, int.MaxValue);//2147483647
+                        //var response = await http.SendAsync(request);
 
-                        if (response.Content.Headers.ContentRange != null) //如果为空，则说明服务器不支持断点续传
-                        {
-                            maxLength = response.Content.Headers.ContentRange.Length;
-                        }                       
 
-                        using (var stream = await response.Content.ReadAsStreamAsync())
+                        //var maxLength = response.Content.Headers.ContentLength;
+
+                        //if (response.Content.Headers.ContentRange != null) //如果为空，则说明服务器不支持断点续传
+                        //{
+                        //    maxLength = response.Content.Headers.ContentRange.Length;
+                        //}
+
+                        var sr = await http.GetAsync(url);
+                        using (var stream = await sr.Content.ReadAsStreamAsync())// ; response.Content.ReadAsStreamAsync())
                         {
+                            var maxLength = sr.Content.Headers.ContentLength;
                             var readLength = 1024000;//1000K
                             byte[] bytes = new byte[readLength];
                             int writeLength;
@@ -131,7 +137,7 @@ namespace 文件下载_客户端_
 
                             var second = DateTime.Now.Second;
                             while ((writeLength = stream.Read(bytes, 0, readLength)) > 0 && !isPause)
-                            {                                
+                            {
                                 using (FileStream fs = new FileStream(Application.StartupPath + "/temp.rar", FileMode.Append, FileAccess.Write))
                                 {
                                     fs.Write(bytes, 0, writeLength);
@@ -165,6 +171,31 @@ namespace 文件下载_客户端_
             else//点击暂停
             {
                 button2.Text = "继续下载";
+            }
+        }
+
+        private async void button3_ClickAsync(object sender, EventArgs e)
+        {
+            using (HttpClient http = new HttpClient())
+            {
+                var messg = await http.GetAsync("http://localhost:813/FileDownload/FileDownload5", HttpCompletionOption.ResponseHeadersRead);
+                var cc = messg.Content.Headers.ContentLength;
+                var response =  http.GetStreamAsync("http://localhost:813/FileDownload/FileDownload5");                
+                using (var stream = await response)
+                {                    
+                    var readLength = 1024000;//1000K
+                    byte[] bytes = new byte[readLength];
+                    int writeLength;
+                    var second = DateTime.Now.Second;
+                    while ((writeLength = stream.Read(bytes, 0, readLength)) > 0)
+                    {
+                        
+                        using (FileStream fs = new FileStream(Application.StartupPath + "/temp.rar", FileMode.Append, FileAccess.Write))
+                        {
+                            fs.Write(bytes, 0, writeLength);
+                        }
+                    }
+                }
             }
         }
     }

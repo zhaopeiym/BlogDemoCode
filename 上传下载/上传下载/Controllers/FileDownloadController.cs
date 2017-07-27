@@ -94,35 +94,31 @@ namespace 上传下载.Controllers
 
         //TransmitFile
         public void FileDownload5()
-        {
-            //微软为Response对象提供了一个新的方法TransmitFile来解决使用Response.BinaryWrite 
-            //下载超过400mb的文件时导致Aspnet_wp.exe进程回收而无法成功下载的问题。         
-
+        {          
             string filename = "大数据.rar";
             string filePath = Server.MapPath("/App_Data/大数据.rar");
 
-            var range = Request.Headers["Range"];
+            var range = "";// Request.Headers["Range"];
             if (!string.IsNullOrWhiteSpace(range))//遵守协议，支持断点续传
             {
-                var maxSize = new FileInfo(filePath).Length;
-                long begin;
-                long end;
+                var fileSize = new FileInfo(filePath).Length;//文件的总大小
+                long begin;//文件的开始位置
+                long end;//文件的结束位置
                 long.TryParse(range.Split('=')[1].Split('-')[0], out begin);
                 long.TryParse(range.Split('-')[1], out end);
-                end = end - begin > 0 ? end : (maxSize - 1);  //Math.Min(end, maxLength);
-                Response.AddHeader("Content-Range", "bytes " + begin + "-" + end + "/" + maxSize);
+                end = end - begin > 0 ? end : (fileSize - 1);  
+
+                Response.AddHeader("Content-Range", "bytes " + begin + "-" + end + "/" + fileSize);
                 Response.ContentType = "application/octet-stream";
                 Response.AddHeader("Content-Disposition", "attachment;filename=" + filename);
                 Response.TransmitFile(filePath, begin, (end - begin));
             }
             else
             {
-                //Response.ContentType = "application/x-zip-compressed"; //不知道有什么区别
                 Response.ContentType = "application/octet-stream";
                 Response.AddHeader("Content-Disposition", "attachment;filename=" + filename);
                 Response.TransmitFile(filePath);
             }
         }
-
     }
 }
