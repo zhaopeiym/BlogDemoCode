@@ -19,9 +19,9 @@ namespace 上传下载.Controllers
         public void FileDownload2()
         {
             string fileName = "新建文件夹2.rar";//客户端保存的文件名  
-            string filePath = Server.MapPath("/App_Data/新建文件夹2.rar");//路径   
+            string filePath = Server.MapPath("/App_Data/新建文件夹2.rar");//要被下载的文件路径   
 
-            Response.ContentType = "application/octet-stream";
+            Response.ContentType = "application/octet-stream";//二进制流
             //通知浏览器下载文件而不是打开  
             Response.AddHeader("Content-Disposition", "attachment;  filename=" + HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8));
 
@@ -44,13 +44,13 @@ namespace 上传下载.Controllers
         public void FileDownload3()
         {
             string fileName = "新建文件夹2.rar";//客户端保存的文件名  
-            string filePath = Server.MapPath("/App_Data/新建文件夹2.rar");//路径  
+            string filePath = Server.MapPath("/App_Data/新建文件夹2.rar");//要被下载的文件路径  
             FileInfo fileInfo = new FileInfo(filePath);
             Response.Clear();
             Response.ClearContent();
             Response.ClearHeaders();
             Response.AddHeader("Content-Disposition", "attachment;filename=\"" + HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8) + "\"");
-            Response.AddHeader("Content-Length", fileInfo.Length.ToString());
+            Response.AddHeader("Content-Length", fileInfo.Length.ToString());//文件大小
             Response.AddHeader("Content-Transfer-Encoding", "binary");
             Response.ContentType = "application/octet-stream";
             Response.WriteFile(fileInfo.FullName);//大小参数必须介于零和最大的 Int32 值之间(也就是最大2G，不过这个操作非常耗内存)
@@ -95,23 +95,26 @@ namespace 上传下载.Controllers
         //TransmitFile
         public void FileDownload5()
         {          
-            string filename = "大数据.rar";
-            string filePath = Server.MapPath("/App_Data/大数据.rar");
+            //前面可以做用户登录验证、用户权限验证等。
 
-            var range = "";// Request.Headers["Range"];
-            if (!string.IsNullOrWhiteSpace(range))//遵守协议，支持断点续传
+            string filename = "大数据.rar";   //客户端保存的文件名  
+            string filePath = Server.MapPath("/App_Data/大数据.rar");//要被下载的文件路径 
+
+            var range = Request.Headers["Range"];
+            if (!string.IsNullOrWhiteSpace(range))//如果遵守协议，支持断点续传
             {
-                var fileSize = new FileInfo(filePath).Length;//文件的总大小
+                var fileLength = new FileInfo(filePath).Length;//文件的总大小
                 long begin;//文件的开始位置
                 long end;//文件的结束位置
                 long.TryParse(range.Split('=')[1].Split('-')[0], out begin);
                 long.TryParse(range.Split('-')[1], out end);
-                end = end - begin > 0 ? end : (fileSize - 1);  
+                end = end - begin > 0 ? end : (fileLength - 1);
 
-                Response.AddHeader("Content-Range", "bytes " + begin + "-" + end + "/" + fileSize);
+                //表头 表明  下载文件的开始、结束位置 和文件总大小
+                Response.AddHeader("Content-Range", "bytes " + begin + "-" + end + "/" + fileLength);
                 Response.ContentType = "application/octet-stream";
                 Response.AddHeader("Content-Disposition", "attachment;filename=" + filename);
-                Response.TransmitFile(filePath, begin, (end - begin));
+                Response.TransmitFile(filePath, begin, (end - begin));//发送 文件开始位置读取的大小
             }
             else
             {
