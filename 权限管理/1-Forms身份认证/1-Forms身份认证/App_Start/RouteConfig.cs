@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Identity
+namespace _1_Forms身份认证
 {
     public class RouteConfig
     {

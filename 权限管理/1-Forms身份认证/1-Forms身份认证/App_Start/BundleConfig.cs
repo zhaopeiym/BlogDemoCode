@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace Identity
+namespace _1_Forms身份认证
 {
     public class BundleConfig
     {

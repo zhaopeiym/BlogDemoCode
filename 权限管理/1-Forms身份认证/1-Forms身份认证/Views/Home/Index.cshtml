@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<style type="text/css">
+    .divContent {
+        margin: 5px;
+        padding: 10px;
+        border: 1px dashed #0094ff;
+    }
+</style>
+
+<div class="divContent">
+    @if (string.IsNullOrWhiteSpace(ViewBag.UserName))
+    {
+        <form action="/home/login1">
+            <input type="text" name="userName" />
+            <input type="submit" value="登录" />
+        </form>
+    }
+    else
+    {
+        <form action="/home/logout1">
+            <div>当前用户已登录，登录名：@ViewBag.UserName</div>
+            <input type="submit" value="退出" />
+        </form>
+    }
+</div>
+
+<div class="divContent">
+    @if (!Request.IsAuthenticated)
+    {
+        <form action="/home/login2">
+            <input type="text" name="userName" />
+            <input type="submit" value="登录" />
+        </form>
+    }
+    else
+    {
+        <form action="/home/logout2">
+            <div>当前用户已登录，登录名：@Context.User.Identity.Name</div>
+            <input type="submit" value="退出" />
+        </form>
+    }
+</div>
+
+
+<div class="divContent">
+    @{
+        MyFormsPrincipal<UserInfo> user = Context.User as MyFormsPrincipal<UserInfo>;
+        if (user == null)
+        {
+            <form action="/home/login3">
+                <input type="text" name="userName" />
+                <input type="submit" value="登录" />
+            </form>
+        }
+        else
+        {
+
+            <form action="/home/logout2">
+                <div>当前用户已登录，登录名：@Context.User.Identity.Name</div>
+                <div>当前用户已登录，登录时间：@user.UserData.LoginTime</div>
+                <input type="submit" value="退出" />
+            </form>
+        }
+    }
+</div>
+
+<div class="divContent">
+    <a href="/home/LoginOk">测试登录</a>
+    <a href="/home/LoginVIP">测试VIP用户</a>
+</div>

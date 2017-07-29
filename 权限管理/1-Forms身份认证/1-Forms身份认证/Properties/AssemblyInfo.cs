@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息是通过以下项进行控制的
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("Identity")]
+[assembly: AssemblyTitle("_1_Forms身份认证")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Identity")]
-[assembly: AssemblyCopyright("版权所有(C)  2017")]
+[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyProduct("_1_Forms身份认证")]
+[assembly: AssemblyCopyright("版权所有(C) Microsoft 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于 typelib 的 ID
-[assembly: Guid("613041d9-f029-4d3d-a56c-3e6afdbb0200")]
+[assembly: Guid("b7e82c34-b84b-4773-88fe-d6d436a58de3")]
 
 // 程序集的版本信息由下列四个值组成:
 //
