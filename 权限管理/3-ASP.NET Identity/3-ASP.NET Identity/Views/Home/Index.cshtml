@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+
 <style type="text/css">
     .divContent {
         margin: 5px;
@@ -10,6 +11,16 @@
 </style>
 
 <div class="divContent">
+    <div>
+        <div>已注册用户：</div>
+        @{
+            var users = ViewBag.Users as List<string>;
+            for (int i = 0; i < users.Count; i++)
+            {
+                <div>@users[i]</div>
+            }
+        }
+    </div>
     <form action="/home/Register">
         <input type="text" name="userName" />
         <input type="text" name="userPassword" />
@@ -32,5 +43,67 @@
             <input type="text" name="userPassword" />
             <input type="submit" value="登录" />
         </form>
-    } 
+    }
+</div>
+
+<div class="divContent">
+    <span>所有角色：</span>
+    @{
+        var roles = ViewBag.Roles as string[];
+        for (int i = 0; i < roles.Length; i++)
+        {
+            <div>@roles[i]</div>
+        }
+    }
+
+    <form action="/home/AddRole">
+        <input type="text" name="roleName" />
+        <input type="submit" value="新增角色" />
+    </form>
+
+    <form action="/home/DelRole">
+        <select name="roleName">
+            @for (int i = 0; i < roles.Length; i++)
+            {
+                <option>@roles[i]</option>
+            }
+        </select>
+        <input type="submit" value="删除角色" />
+    </form>
+</div>
+
+<div class="divContent">
+    @if (Request.IsAuthenticated)
+    {
+        <span>当前用户拥有角色：</span>
+        var userRoles = ViewBag.RolesByUser as string[];
+        for (int i = 0; i < userRoles.Length; i++)
+        {
+            <div>@userRoles[i]</div>
+        }
+
+        <form action="/home/AddUserToRole">
+            <select name="roleName">
+                @for (int i = 0; i < roles.Length; i++)
+                {
+                    <option>@roles[i]</option>
+                }
+            </select>
+            <input type="submit" value="给当前用户添加角色" />
+        </form>
+
+        <form action="/home/DelUserToRole">
+            <select name="roleName">
+                @for (int i = 0; i < roles.Length; i++)
+                {
+                    <option>@roles[i]</option>
+                }
+            </select>
+            <input type="submit" value="给当前用户删除角色" />
+        </form>
+    }
+</div>
+
+<div class="divContent">
+    <a href="/home/VIP">VPI访问</a>
 </div>

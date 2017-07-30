@@ -9,7 +9,7 @@ namespace _3_ASP.NET_Identity
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+            ConfigureAuth(app); // 这里注意下，访问不到是Startup.cs 的命名空间和 Startup.Auth.cs 不一致。   
         }
     }
 }

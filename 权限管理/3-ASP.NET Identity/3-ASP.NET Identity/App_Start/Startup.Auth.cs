@@ -15,24 +15,8 @@ namespace _3_ASP.NET_Identity
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString("/Account/Login")
-            });
-            // Use a cookie to temporarily store information about a user logging in with a third party login provider
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
-
-            // 取消注释以下行可允许使用第三方登录提供程序登录
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
-
-            //app.UseTwitterAuthentication(
-            //   consumerKey: "",
-            //   consumerSecret: "");
-
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
-
-            //app.UseGoogleAuthentication();
+            });          
+            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);           
         }
     }
 }

@@ -11,4 +11,8 @@ namespace _3_ASP.NET_Identity
     {
         public string MyName { get; set; }
     }
+
+    public class MyRole : IdentityRole
+    {    
+    }
 }
