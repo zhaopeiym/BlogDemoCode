@@ -130,7 +130,7 @@ namespace WebApplication1
         /// </summary>
         /// <param name="app"></param>
         public static void Map(IApplicationBuilder app)
-        {
+        {           
             app.UseWebSockets();
             app.Use(Acceptor);
         }
