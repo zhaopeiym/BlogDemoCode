@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>激情聊天室</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        input {
+            display: inline-block;
+            width: 250px;
+            height: 35px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        }
+
+        button {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-image: none;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            color: #333;
+            background-color: #fff;
+            border-color: #ccc;
+            width: 90px;
+        }
+
+            button:hover {
+                color: #333;
+                background-color: #e6e6e6;
+                border-color: #adadad;
+            }
+
+        /*PC*/
+        @media (min-width: 992px) {
+            .divContent {
+                margin: 10px auto;
+                margin-top: 55px;
+                width: 700px;
+                height: 800px;
+                /*border: 1px dashed #808080;*/
+                padding: 15px;
+            }
+
+            #output {
+                margin-bottom: 20px;
+                width: 670px;
+                height: 700px;
+                border: 1px dashed #808080;
+                padding: 15px;
+                padding-top: 0px;
+                overflow-y: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="divContent">
+        <div id="output"></div>
+        <span style="margin-right:50px;">
+            <button onclick="doConnect()">登录</button>
+            <button onclick="doDisconnect()">下线</button>
+        </span>
+        <span style="float:right">
+            <span style="margin-right:10px;"> 消息</span>
+            <input type="text" id="sendInput" />
+            <button onclick="doSendInput()">发送</button>
+        </span>
+    </div>
+
+    <script type="text/javascript">
+        var socket = null;
+        //服务器
+        var uri = "ws://" + window.location.host + "/ws";
+        var output;
+
+        //输入
+        function write(s) {
+            var p = document.createElement("p");
+            p.innerHTML = s;
+            output.appendChild(p);
+
+            output.scrollTop = output.scrollHeight;
+        }
+
+        //登录上下（连接）
+        function doConnect() {
+            socket = new WebSocket(uri);
+            //打开连接（事件）
+            socket.onopen = function (e) {
+                write("您已经登录");
+            };
+            //关闭连接（事件）
+            socket.onclose = function (e) {
+                if (e.code === 1008) {
+                    write("您已被迫下线。" + e.reason);
+                }
+                else
+                    write("您已下线。");
+                socket = null;
+            };
+            //接收消息（事件）
+            socket.onmessage = function (e) {
+                write("接收: " + e.data);
+            };
+            //异常（事件）
+            socket.onerror = function (e) {
+                if (e.data)
+                    write("异常: " + e.data);
+            };
+        }
+
+        //群发消息（发送消息）
+        function doSendInput() {
+            if (socket == null) {
+                write("您还没有登录！");
+                return;
+            }
+
+            var text = document.getElementById("sendInput").value;
+            write("我: " + text);
+            socket.send(text);
+        }
+
+        function onInit() {
+            output = document.getElementById("output");
+        }
+
+        //下线（关闭连接）
+        function doDisconnect() {
+            socket.close();
+        }
+
+        window.onload = onInit;
+    </script>
+</body>
+</html>
