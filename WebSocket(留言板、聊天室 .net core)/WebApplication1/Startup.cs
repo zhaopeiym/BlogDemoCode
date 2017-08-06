@@ -30,7 +30,7 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //注意：一定要加 sslmode=none 。可以不加，默认会自动带上
+            //注意：一定要加 sslmode=none 
             var connection = Configuration.GetConnectionString("SqlServerConnection");
             services.AddDbContext<DataContext>(options => options.UseMySQL(connection));
 
@@ -62,7 +62,7 @@ namespace WebApplication1
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=webSocket}/{action=index}/{id?}");
+                    template: "{controller=Home}/{action=index}/{id?}");
             });
 
             app.Map("/ws", SocketHandler.Map);

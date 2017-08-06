@@ -127,7 +127,7 @@ namespace WebApplication1
         /// <param name="data"></param>
         public static void SaveHistoricalMessg(ChatData data)
         {
-            var size = 20;
+            var size = 40;
             lock (lockSaveMsg)
             {
                 historicalMessg.Add(data);
@@ -135,9 +135,8 @@ namespace WebApplication1
             if (historicalMessg.Count >= size)
             {
                 lock (lockSaveMsg)
-                {
-                    var conut = historicalMessg.Count - size;
-                    historicalMessg.RemoveRange(0, conut);
+                {                    
+                    historicalMessg.RemoveRange(0, 30);
                 }
             }
         }
