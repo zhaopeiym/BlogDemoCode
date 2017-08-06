@@ -21,6 +21,7 @@ namespace WebApplication1
         private static List<WebSocket> _sockets = new List<WebSocket>();
         public const int BufferSize = 4096;
         public static object objLock = new object();
+        public static List<ChatData> historicalMessg = new List<ChatData>();//存放历史消息
 
         /// <summary>
         /// 接收请求
@@ -51,9 +52,10 @@ namespace WebApplication1
 
             //根据请求头获取 用户名
             string userName = httpContext.Request.Query["userName"].ToString();
-            var tempBuffer = Encoding.UTF8.GetBytes("{\"info\":\"" + userName + "已上线，当前在线" + _sockets.Count + "人~~\"}");
+
+            var chatData = new ChatData() { info = userName + " 进入房间。当前在线人" + _sockets.Count + "人~~" };
             //群发上线通知
-            await SendToWebSocketsAsync(_sockets, new ArraySegment<byte>(tempBuffer));
+            await SendToWebSocketsAsync(_sockets, chatData);
 
             while (true)
             {
@@ -69,18 +71,27 @@ namespace WebApplication1
                         {
                             _sockets.Remove(socket);//移除   
                         }
-
-                        buffer = Encoding.UTF8.GetBytes("{\"info\":\"" + userName + "已下线，当前在线" + _sockets.Count + "人~~\"}");
-                        await SendToWebSocketsAsync(_sockets, new ArraySegment<byte>(buffer));
+                        chatData = new ChatData() { info = userName + " 离开房间。还剩" + _sockets.Count + "人~~" };
+                        await SendToWebSocketsAsync(_sockets, chatData);
                         break; //【注意】：：这里一定要记得 跳出循环 （坑了好久）
                     }
-                    await SendToWebSocketsAsync(_sockets.Where(t => t != socket).ToList(), new ArraySegment<byte>(buffer, 0, incoming.Count));
+                    //转字符串，然后序列化，然后赋值，然后再序列化
+                    var chatDataStr = await ArraySegmentToStringAsync(new ArraySegment<byte>(buffer, 0, incoming.Count));
+                    if (chatDataStr == "heartbeat")//如果是心跳检查，则直接跳过
+                        continue;
+                    chatData = JsonConvert.DeserializeObject<ChatData>(chatDataStr);
+                    chatData.time = DateTime.Now;//使用服务器时间 
+                    await SendToWebSocketsAsync(_sockets.Where(t => t != socket).ToList(), chatData);
                 }
-                catch (Exception ex)
+                catch (Exception ex) //因为 nginx 没有数据传输 会自动断开 然后就会异常。
                 {
                     Log(ex.Message);
-                    //【注意】：：这里很重要 （如果不发送关闭会一直循环，也不能直接break。这里关闭后，下此循环判断MessageType 就会break掉。）
+                    _sockets.Remove(socket);//移除
+                    chatData = new ChatData() { info = userName + " 离开房间。还剩" + _sockets.Count + "人~~" };
+                    await SendToWebSocketsAsync(_sockets, chatData);
+                    //【注意】：：这里很重要 （如果不发送关闭会一直循环，且不能直接break。）
                     await socket.CloseAsync(WebSocketCloseStatus.PolicyViolation, "未知异常 ...", CancellationToken.None);
+                    // 后面 就不走了？ CloseAsync也不能 try 包起来？
                 }
             }
         }
@@ -91,8 +102,12 @@ namespace WebApplication1
         /// <param name="sockets"></param>
         /// <param name="arraySegment"></param>
         /// <returns></returns>
-        public async static Task SendToWebSocketsAsync(List<WebSocket> sockets, ArraySegment<byte> arraySegment)
+        public async static Task SendToWebSocketsAsync(List<WebSocket> sockets, ChatData data)
         {
+            SaveHistoricalMessg(data);//保存历史消息
+            var chatData = JsonConvert.SerializeObject(data);
+            var buffer = Encoding.UTF8.GetBytes(chatData);
+            ArraySegment<byte> arraySegment = new ArraySegment<byte>(buffer);
             //循环发送消息
             for (int i = 0; i < sockets.Count; i++)
             {
@@ -105,7 +120,29 @@ namespace WebApplication1
             }
         }
 
-        #region 暂时没有用到
+        static object lockSaveMsg = new object();
+        /// <summary>
+        /// 保存历史消息
+        /// </summary>
+        /// <param name="data"></param>
+        public static void SaveHistoricalMessg(ChatData data)
+        {
+            var size = 20;
+            lock (lockSaveMsg)
+            {
+                historicalMessg.Add(data);
+            }
+            if (historicalMessg.Count >= size)
+            {
+                lock (lockSaveMsg)
+                {
+                    var conut = historicalMessg.Count - size;
+                    historicalMessg.RemoveRange(0, conut);
+                }
+            }
+        }
+
+        #region
         /// <summary>
         /// 转字符串
         /// </summary>
@@ -130,7 +167,7 @@ namespace WebApplication1
         /// </summary>
         /// <param name="app"></param>
         public static void Map(IApplicationBuilder app)
-        {           
+        {
             app.UseWebSockets();
             app.Use(Acceptor);
         }

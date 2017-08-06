@@ -12,6 +12,7 @@
     <Content Include="wwwroot\css\site.css" />
     <Content Include="wwwroot\css\site.min.css" />
     <Content Include="wwwroot\favicon.ico" />
+    <Content Include="wwwroot\favicon1.ico" />
     <Content Include="wwwroot\images\background.png" />
     <Content Include="wwwroot\images\banner1.svg" />
     <Content Include="wwwroot\images\banner2.svg" />

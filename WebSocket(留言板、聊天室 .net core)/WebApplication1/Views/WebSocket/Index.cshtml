@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "激情聊天室";
+    ViewData["Title"] = "交友聊天室-相见即是缘";
 }
 
 
@@ -177,6 +177,15 @@
 <script src="~/lib/moment/moment.js"></script>
 <script type="text/javascript">
 
+    $(function () {
+        var historicalMessg = @Html.Raw(@ViewBag.HistoricalMessg);
+        for (var i = 0; i < historicalMessg.length; i++) {
+            write(historicalMessg[i]);
+        }
+        write({ "info": "聊天室热词 #约吗# #么么哒# #撩妹# #懵逼#" });
+    });
+
+
     var HtmlUtil = {
         /*1.用浏览器内部转换器实现html转码*/
         htmlEncode: function (html) {
@@ -214,17 +223,24 @@
 
         //系统消息
         if (data.info) {
-            $output.append("<div class='msgBlockInfo'>【系统消息】" + data.info + "</div>");
+            $output.append("<div class='msgBlockInfo'>【系统】" + data.info + "</div>");
             $output.scrollTop($output[0].scrollHeight);
             return;
         }
 
         if (data.time) {
-            $output.append("<div class='msgBlockTime'>" + data.time + "</div>");
+            $output.append("<div class='msgBlockTime'>" + moment(data.time).format("YYYY-MM-DD HH:mm:ss"), + "</div>");
         }
         var sex = data.sex === "男" ? "♂" : "♀";
         $output.append("<div class='msgBlockContent'><span class=" + eleClass + ">" + HtmlUtil.htmlEncode(data.name) + "(" + sex + ")：</span><span class='msgContent'>" + HtmlUtil.htmlEncode(data.content) + "</span></div>");
         $output.scrollTop($output[0].scrollHeight);
+    }
+
+    var time = null;
+    var timedCount = function () {
+        if (socket.readyState === 1)//1 - 表示连接已建立，可以进行通信。
+            socket.send("heartbeat");
+        time = setTimeout(timedCount, 58 * 1000); //58秒发一次心跳
     }
 
     //登录上下（连接）
@@ -239,15 +255,17 @@
             .css("background-color", "#BFBFBF")
             .text("登录中...");
 
+        if (socket === null || socket.readyState != 1) {//1 - 表示连接已建立，可以进行通信。
+            socket = new WebSocket(uri + "?userName=" + userName);
+            timedCount();
+        }
 
-        socket = new WebSocket(uri + "?userName=" + userName);
-
-        //打开连接（事件）
-        socket.onopen = function (e) {           
+        //连接建立时触发
+        socket.onopen = function (e) {
             $(".logout").removeClass("displayNone");
             $(".login").addClass("displayNone");
         };
-        //关闭连接（事件）
+        //连接关闭时触发
         socket.onclose = function (e) {
             if (e.code === 1008) {
                 write({ "info": userName + "，您已被迫下线。 " + e.reason });
@@ -257,17 +275,18 @@
 
             $(".logout").addClass("displayNone");
             $(".login").removeClass("displayNone");
-            socket = null;
             $(".btnLogin").prop("disabled", false)
                 .css("background-color", "#fff")
                 .text("登录");
+            socket = null;
+            clearTimeout(time);
         };
-        //接收消息（事件）
+        //客户端接收服务端数据时触发
         socket.onmessage = function (e) {
             var chat = JSON.parse(e.data);
             write(chat);
         };
-        //异常（事件）
+        //通信发生错误时触发
         socket.onerror = function (e) {
             if (e.data)
                 write({ "info": "异常: " + e.data });
@@ -281,7 +300,14 @@
         }
     });
 
-    //群发消息（发送消息）
+    //回车登录
+    $(".userName").keydown(function (e) {
+        if (e.keyCode === 13) {
+            doConnect();
+        }
+    });
+
+    //发送消息
     function doSendInput() {
         if (!$("#sendInput").val()) {
             return;
@@ -292,7 +318,7 @@
         }
         var chat = {
             "content": $("#sendInput").val() || "抖一下~~",
-            "time": moment().format("YYYY-MM-DD HH:mm:ss"),
+            "time": new Date(),
             "name": $(".userName").val() || "匿名",
             "sex": $(":radio:checked").val(),
         };
