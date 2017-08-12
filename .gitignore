@@ -95,3 +95,7 @@
 /UnitTestingDemo(单元测试)/TestDemo/bin
 /UnitTestingDemo(单元测试)/TestDemo.Tests/bin
 /UnitTestingDemo(单元测试)/TestDemo.Tests/obj
+/MessageBoard/MessageBoard/bin
+/MessageBoard/MessageBoard/obj
+/MessageBoard/MessageBoard/appsettings.json
+/MessageBoard/MessageBoard/appsettings.Development.json
