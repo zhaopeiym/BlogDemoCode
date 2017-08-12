@@ -64,8 +64,7 @@ namespace WebApplication1
                     name: "default",
                     template: "{controller=Home}/{action=index}/{id?}");
             });
-
-            app.Map("/ws", SocketHandler.Map);
+            
         }
     }
 }

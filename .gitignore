@@ -73,3 +73,25 @@
 /WebSocket(留言板、聊天室 .net core)/WebApplication1/obj
 /WebSocket(留言板、聊天室 .net core)/WebApplication1/bin
 /WebSocket(留言板、聊天室 .net core)/.vs
+/(留言板 .net core)/WebApplication1/appsettings.Development.json
+/(留言板 .net core)/WebApplication1/appsettings.json
+/(留言板 .net core)/WebApplication1/bin
+/(留言板 .net core)/WebApplication1/obj
+/留言板 .net core/WebApplication1/appsettings.Development.json
+/留言板 .net core/WebApplication1/appsettings.json
+/留言板 .net core/WebApplication1/bin
+/留言板 .net core/WebApplication1/obj
+/sso(单点登录)/SSODemo/.vs
+/sso(单点登录)/SSODemo/packages
+/sso(单点登录)/SSODemo/sso-client1/obj
+/sso(单点登录)/SSODemo/sso-client1/bin
+/sso(单点登录)/SSODemo/sso-client2/obj
+/sso(单点登录)/SSODemo/sso-client2/bin
+/sso(单点登录)/SSODemo/sso-service/obj
+/sso(单点登录)/SSODemo/sso-service/bin
+/UnitTestingDemo(单元测试)/packages
+/UnitTestingDemo(单元测试)/.vs
+/UnitTestingDemo(单元测试)/TestDemo/obj
+/UnitTestingDemo(单元测试)/TestDemo/bin
+/UnitTestingDemo(单元测试)/TestDemo.Tests/bin
+/UnitTestingDemo(单元测试)/TestDemo.Tests/obj
