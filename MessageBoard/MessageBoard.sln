@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageBoard", "MessageBoard\MessageBoard.csproj", "{F2D73A16-CA12-4C18-8F34-38DB1E5D17B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageBoard", "MessageBoard\MessageBoard.csproj", "{C90B2181-832C-4A37-97A1-BC4EF63B918C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F2D73A16-CA12-4C18-8F34-38DB1E5D17B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F2D73A16-CA12-4C18-8F34-38DB1E5D17B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F2D73A16-CA12-4C18-8F34-38DB1E5D17B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F2D73A16-CA12-4C18-8F34-38DB1E5D17B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C90B2181-832C-4A37-97A1-BC4EF63B918C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C90B2181-832C-4A37-97A1-BC4EF63B918C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C90B2181-832C-4A37-97A1-BC4EF63B918C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C90B2181-832C-4A37-97A1-BC4EF63B918C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
