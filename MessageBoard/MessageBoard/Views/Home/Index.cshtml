@@ -46,7 +46,7 @@
     }
 </style>
 
-<div class="divContent">  
+<div class="divContent">
     <div style="color:red;font-size:23px;font-weight:700;">
         Hi-Blogs，ASP.NET Core 正式启动。只为技术而技术！！！
     </div>
@@ -137,9 +137,9 @@
     var index = 1;
     var cont = 30;
 
-    NProgress.configure({ ease: 'ease', speed: 800 });
+    NProgress.configure({ ease: 'ease', speed: 400 });
     NProgress.configure({ minimum: 0.4 });
-    NProgress.configure({ trickleRate: 0.13, trickleSpeed: 500  });
+    NProgress.configure({ trickleRate: 0.13, trickleSpeed: 500 });
 
     window.onscroll = function () {
         if ($(window).scrollTop() == $(document).height() - $(window).height() && $(".button").length) {
@@ -149,7 +149,7 @@
                     url: "/Home/GetData",
                     data: { "page": cont * index },
                     complete: function () {
-                        // NProgress.done();
+                        NProgress.done();
                     },
                     success: function (sData) {
                         var tempHtml = "";
