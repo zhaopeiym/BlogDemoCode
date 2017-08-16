@@ -24,7 +24,7 @@ namespace MessageBoard.Controllers
 
         public async Task<List<Message>> GetData(int page, int cont)
         {
-            cont = cont == 0 ? 30 : cont;
+            cont = cont == 0 || cont > 30 ? 30 : cont;
 
             var messgs = await _db.Messages.OrderByDescending(t => t.CreateTime).Skip(page).Take(cont).AsNoTracking().ToListAsync();
             return messgs;
