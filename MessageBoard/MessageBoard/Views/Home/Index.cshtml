@@ -155,14 +155,13 @@
     };
 
     $(".btnSave").click(function () {
-        var token = "@(ViewBag.Token)";
-        token= jsencrypt("javascriptjsencr", token);
+
         var _this = this;
         $(_this).prop("disabled", true);
         $.ajax({
             url: "/Home/RecordMessges",
             type: "post",
-            data: $(_this).closest("form").serialize() + "&token="+token,
+            data: $(_this).closest("form").serialize(),
             success: function (sData) {
                 location.reload(true);
             }
