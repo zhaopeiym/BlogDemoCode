@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Talk.AntiMalice;
 
 namespace MessageBoard.Controllers
 {
@@ -31,8 +32,10 @@ namespace MessageBoard.Controllers
         }
 
         [HttpPost]
-        public async Task RecordMessges(string msg, string userName)
+        public async Task<string> RecordMessges(string msg, string userName)
         {
+            if (!HttpContext.GetChance(10))
+                return "正加载中...";
             if (!string.IsNullOrEmpty(msg))
             {
                 var ip = GetUserIp();
@@ -45,7 +48,7 @@ namespace MessageBoard.Controllers
                 });
                 await _db.SaveChangesAsync();
             }
-            //Response.Redirect("/Home/Index");
+            return "提交成功";
         }
 
         /// <summary>

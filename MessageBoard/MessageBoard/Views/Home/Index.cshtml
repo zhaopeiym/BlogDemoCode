@@ -90,10 +90,10 @@
             </form>
         </div>
         <div class="nopc" style="border:1px dashed #0094ff;padding:10px;margin:5px">
-            <form action="/Home/RecordMessges" method="post">
+            <form >
                 <div>留言：<input type="text" name="msg" /></div>
                 <div style="margin-top:5px;margin-bottom:5px">大名：<input type="text" name="userName" /></div>
-                <div><input type="submit" value="弹一个~" /></div>
+                <div><input class="btnSave" type="button"  value="弹一个~" /></div>
             </form>
         </div>
     </div>
@@ -154,11 +154,12 @@
     };
 
     $(".btnSave").click(function () {
-        $(".btnSave").prop("disabled", true);
+        var _this = this;
+        $(_this).prop("disabled", true);
         $.ajax({
             url: "/Home/RecordMessges",
             type: "post",
-            data: $(".messgform").serialize(),
+            data: $(_this).closest("form").serialize(),
             success: function (sData) {
                 location.reload(true);
             }
