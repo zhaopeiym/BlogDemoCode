@@ -90,10 +90,10 @@
             </form>
         </div>
         <div class="nopc" style="border:1px dashed #0094ff;padding:10px;margin:5px">
-            <form >
+            <form>
                 <div>留言：<input type="text" name="msg" /></div>
                 <div style="margin-top:5px;margin-bottom:5px">大名：<input type="text" name="userName" /></div>
-                <div><input class="btnSave" type="button"  value="弹一个~" /></div>
+                <div><input class="btnSave" type="button" value="弹一个~" /></div>
             </form>
         </div>
     </div>
@@ -123,6 +123,7 @@
 <script src="~/lib/moment/moment.js"></script>
 <link href="~/lib/nprogress/nprogress.css" rel="stylesheet" />
 <script src="~/lib/nprogress/nprogress.js"></script>
+<script src="~/js/jsDes.js"></script>
 
 <script type="text/javascript">
 
@@ -154,12 +155,14 @@
     };
 
     $(".btnSave").click(function () {
+        var token = "@(ViewBag.Token)";
+        token= jsencrypt("javascriptjsencr", token);
         var _this = this;
         $(_this).prop("disabled", true);
         $.ajax({
             url: "/Home/RecordMessges",
             type: "post",
-            data: $(_this).closest("form").serialize(),
+            data: $(_this).closest("form").serialize() + "&token="+token,
             success: function (sData) {
                 location.reload(true);
             }
