@@ -31,7 +31,7 @@ namespace MessageBoard.Controllers
         }
 
         [HttpPost]
-        public void RecordMessges(string msg, string userName)
+        public async Task RecordMessges(string msg, string userName)
         {
             if (!string.IsNullOrEmpty(msg))
             {
@@ -43,9 +43,9 @@ namespace MessageBoard.Controllers
                     UserName = userName ?? "蒙面人",
                     Content = msg
                 });
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
             }
-            Response.Redirect("/Home/Index");
+            //Response.Redirect("/Home/Index");
         }
 
         /// <summary>
