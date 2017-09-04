@@ -100,3 +100,5 @@
 /MessageBoard/MessageBoard/appsettings.json
 /MessageBoard/MessageBoard/appsettings.Development.json
 /MessageBoard/.vs
+/依赖注入/DIDemo/DemoNetCore/obj
+/依赖注入/DIDemo/DemoNetCore/bin

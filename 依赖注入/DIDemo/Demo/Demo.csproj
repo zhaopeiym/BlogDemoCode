@@ -61,7 +61,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DemoClass.cs" />
+    <Compile Include="Demo2.cs" />
+    <Compile Include="Demo1.cs" />
+    <Compile Include="Demo3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
