@@ -14,7 +14,7 @@ namespace DemoNetCore.Controllers
     {
         string GetName();
     }
-    public class User : IUser
+    public class User : IUser, IApplicationService
     {
         public string GetName()
         {
@@ -27,7 +27,7 @@ namespace DemoNetCore.Controllers
         string GetName();
     }
 
-    public class UserService : IUserService
+    public class UserService : IUserService, IApplicationService
     {
         private IUser _user;
         public UserService(IUser user)
