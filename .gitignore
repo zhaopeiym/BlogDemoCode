@@ -102,3 +102,6 @@
 /MessageBoard/.vs
 /依赖注入/DIDemo/DemoNetCore/obj
 /依赖注入/DIDemo/DemoNetCore/bin
+/NoSQL/Redis/dotnetcoer_redis_demo/dotnetcoer_redis_demo/bin
+/NoSQL/Redis/dotnetcoer_redis_demo/dotnetcoer_redis_demo/obj
+/NoSQL/Redis/dotnetcoer_redis_demo/.vs
