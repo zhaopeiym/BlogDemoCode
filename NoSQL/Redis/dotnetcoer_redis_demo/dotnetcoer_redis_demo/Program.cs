@@ -12,35 +12,87 @@ namespace dotnetcoer_redis_demo
 
     class Program
     {
-        static string RedisConnection = "192.168.2.135:6379,allowAdmin=true,password=fsm2016redis,defaultdatabase=10";
+        //allowAdmin ： 当为true时 ，可以使用一些被认为危险的命令
+        //connectRetry ：重试连接的次数
+        //connectTimeout：超时时间
+        //ssl={bool} ： 使用sll加密
+        //syncTimeout={int} ： 异步超时时间
+
+        static string RedisConnection = "192.168.2.135:6379,allowAdmin=true,password=fsm,defaultdatabase=10";
         static void Main(string[] args)
         {
             //[nuget StackExchange.Redis.StrongName]
-            //ConnectionMultiplexer是线程安全的 
+            //ConnectionMultiplexer是线程安全的，且是昂贵的。所以我们应该尽量重用。            
             ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(RedisConnection);
             var db = connectionMultiplexer.GetDatabase();
 
+            //Redis会很快速，所有的东西都在存储器里。但，让Redis闪耀的真正原因是其不同于其它解决方案的特殊数据结构。
             //如果key已经拥有一个值，则被覆盖
+            //http://www.cnblogs.com/yanghua1012/p/5679183.html
+
+            //字符串（Strings)
             var key = "keystring";
-            db.StringSet(key, "你好，世界！");
+            db.StringSet(key, "你好", TimeSpan.FromSeconds(5));//写入字符串，并指定过期时间。对应reids的setex key 5或者(set key和expire key 5)命令 。
+            db.StringAppend(key, " world"); //追加值
+            db.StringIncrement("benny:click");//储存的数字值增一，对应 incr key 命令
+            db.StringIncrement("benny:click");
 
-            db.HashSet("list1", "name", "农码一生");
-            db.HashSet("list1", "age", "27");
+            //散列（Hashes）
+            db.HashSet("users:benny", "name", "农码一生");// 对应 hset key 命令
+            db.HashSet("users:benny", "age", "27");
+            db.HashSet("users:joy", new HashEntry[] { new HashEntry("name", "妹子啊"), new HashEntry("age", "18"), });//对应于 hmset key
+            db.HashSet("users:joy", "sex", "女");
 
-            db.SetAdd("list2", "list21");
-            db.SetAdd("list2", "list22");
+            //列表（Lists）
+            db.ListLeftPush("list4", "list41"); //对应 lpush 命令
+            db.ListLeftPush("list4", "list42");
+            var ranges = db.ListRange("list4", 0);//获取列表所有值
+            ranges = db.ListRange("list4", 0, 2);// 获取列表 0 到2 的值，对应 lrange list4 0 2命令
+            ranges = db.Sort("list4", sortType: SortType.Alphabetic);//排序。对应 sort list4 limit 0 10 desc alpha命令                        
 
+            //集合（Sets）
+            db.SetAdd("list-a", "张三");//对应 sadd 命令
+            db.SetAdd("list-a", "李四");
+            db.SetAdd("list-b", "张三");
+            db.SetAdd("list-b", new RedisValue[] { "王五", "郑六" });
+            var hasValue = db.SetContains("list-a", "张三");//true，对应 sismember 命令
+            hasValue = db.SetContains("list-a", "王五");//false
+            var newSets = db.SetCombine(SetOperation.Union, new RedisKey[] { "list-a", "list-b" });//并集 
+            newSets = db.SetCombine(SetOperation.Intersect, new RedisKey[] { "list-a", "list-b" });//交集
+            newSets = db.SetCombine(SetOperation.Difference, new RedisKey[] { "list-a", "list-b" });//存在于集合list-a 却不存在于集合list-b中的值
+
+            //分类集合（Sorted Sets）
             db.SortedSetAdd("list3", "list31", DateTime.Now.Ticks);
             db.SortedSetAdd("list3", "list32", DateTime.Now.Ticks);
 
-            db.ListLeftPush("list4", "list41");
-            db.ListLeftPush("list4", "list42");
-
-            Console.WriteLine(db.KeyExists(key));                  //判断是否存在key
-            db.KeyDelete(key, CommandFlags.HighPriority);          //删除key
+            var tran = db.CreateTransaction();//创建一个事务
+            if (db.KeyExists(key)) //判断是否存在key
+            {
+                //db.KeyDelete(key, CommandFlags.HighPriority);          //删除key
+            }
             Console.WriteLine(db.KeyExists(key));
+            //....
+            bool committed = tran.Execute();// 提交执行事务
 
-            #region 序列化后存储
+            #region 测试
+            ////测试
+            //for (int i = 1000000; i < 2000000; i++)
+            //{
+            //    db.StringSet("JsonConvert"+ i, "ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）" +
+            //        "ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）" +
+            //        "ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）" +
+            //        "ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）" +
+            //        "ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）" +
+            //        "ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）" +
+            //        "ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）" +
+            //        "ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）" +
+            //        "ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）" +
+            //        "ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）" +
+            //        "ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）ASP.NET Core 快速入门（实战篇）");
+            //} 
+            #endregion
+
+            #region 序列化后存储            
             Blog blog = new Blog { Id = 1, Title = "ASP.NET Core 快速入门（实战篇）", Content = "~~~~~~~~~~~~~" };
             //JsonConvert[nuget Newtonsoft.Json] 的方式序列化存储                
             db.StringSet("JsonConvert", JsonConvert.SerializeObject(blog));
