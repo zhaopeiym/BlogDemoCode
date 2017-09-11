@@ -8,8 +8,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace dotnetcoer_redis_demo
 {
-
-
     class Program
     {
         //allowAdmin ： 当为true时 ，可以使用一些被认为危险的命令
@@ -62,9 +60,26 @@ namespace dotnetcoer_redis_demo
             newSets = db.SetCombine(SetOperation.Difference, new RedisKey[] { "list-a", "list-b" });//存在于集合list-a 却不存在于集合list-b中的值
 
             //分类集合（Sorted Sets）
-            db.SortedSetAdd("list3", "list31", DateTime.Now.Ticks);
-            db.SortedSetAdd("list3", "list32", DateTime.Now.Ticks);
+            db.SortedSetAdd("list3", "list31", 1);
+            db.SortedSetAdd("list3", "list33", 3);
+            db.SortedSetAdd("list3", "list331", 4);
+            db.SortedSetAdd("list3", "list33.1", 2);
+            db.SortedSetAdd("list3", "list32", 2);
+            var redisValues = db.SortedSetRangeByRank("list3", 0, 2, Order.Ascending, CommandFlags.None);//范围
+            var length = db.SortedSetLength("list3");//获取长度
+            var tempLength = db.SortedSetLengthByValue("list3", "list31", "list32");//获取RedisValue之间的长度
+            var index = db.SortedSetRank("list3", "list331");//下标
+            //db.SortedSetCombineAndStore(SetOperation.Union, "new...", "...", "...");//并集 
+            //db.SortedSetCombineAndStore(SetOperation.Intersect, "new...", "...", "...");//交集
+            //db.SortedSetCombineAndStore(SetOperation.Difference, "new...", "...", "...");//差异 not in
 
+            //bit
+            db.StringSetBit("bitkey", 0, true);
+            db.StringSetBit("bitkey", 1, false);
+            db.StringGetBit("bitkey", 0);
+            var position = db.StringBitPosition("bitkey", false, 0, 1);
+
+            //事务
             var tran = db.CreateTransaction();//创建一个事务
             if (db.KeyExists(key)) //判断是否存在key
             {
@@ -73,6 +88,21 @@ namespace dotnetcoer_redis_demo
             Console.WriteLine(db.KeyExists(key));
             //....
             bool committed = tran.Execute();// 提交执行事务
+
+            //Lock(分布式锁)
+            RedisValue token = Environment.MachineName;
+            // 秒杀
+            if (db.LockTake("id", token, TimeSpan.FromSeconds(10)))//10秒自动解锁
+            {
+                try
+                {
+                    //Thread.Sleep(5000);
+                }
+                finally
+                {
+                    db.LockRelease("id", token);
+                }
+            }
 
             #region 测试
             ////测试
@@ -94,11 +124,11 @@ namespace dotnetcoer_redis_demo
 
             #region 序列化后存储            
             Blog blog = new Blog { Id = 1, Title = "ASP.NET Core 快速入门（实战篇）", Content = "~~~~~~~~~~~~~" };
-            //JsonConvert[nuget Newtonsoft.Json] 的方式序列化存储                
+            //1、JsonConvert[nuget Newtonsoft.Json] 的方式序列化存储                
             db.StringSet("JsonConvert", JsonConvert.SerializeObject(blog));
             blog = JsonConvert.DeserializeObject<Blog>(db.StringGet("JsonConvert"));
 
-            //BinaryFormatter 的方式序列化存储【注意：被序列化的类要标记特性 [Serializable]】
+            //2、BinaryFormatter 的方式序列化存储【注意：被序列化的类要标记特性 [Serializable]】
             using (var memoryStream = new MemoryStream())
             {
                 new BinaryFormatter().Serialize(memoryStream, blog);
@@ -109,7 +139,7 @@ namespace dotnetcoer_redis_demo
                 blog = (Blog)new BinaryFormatter().Deserialize(stream);
             }
 
-            //[nuget protobuf-net] 的方式序列化存储【注意：被序列化的类要标记特性 [ProtoContract]，字段要标记特性[ProtoMember(1)]】
+            //3、[nuget protobuf-net] 的方式序列化存储【注意：被序列化的类要标记特性 [ProtoContract]，字段要标记特性[ProtoMember(1)]】
             using (var memoryStream = new MemoryStream())
             {
                 ProtoBuf.Serializer.Serialize(memoryStream, blog);
@@ -126,7 +156,7 @@ namespace dotnetcoer_redis_demo
             var count = 0;// 80000;
             Stopwatch stopwatch = new Stopwatch();
 
-            //JsonConvert[nuget Newtonsoft.Json] 的方式序列化
+            //1、JsonConvert[nuget Newtonsoft.Json] 的方式序列化
             stopwatch.Restart();//开始监视代码运行时间
             for (int i = 0; i < count; i++)
             {
@@ -137,7 +167,7 @@ namespace dotnetcoer_redis_demo
             stopwatch.Stop(); //  停止监视
             Console.WriteLine("Newtonsoft.Json:" + stopwatch.Elapsed.TotalMilliseconds + "毫秒");//总毫秒数
 
-            //BinaryFormatter 的方式序列化
+            //2、BinaryFormatter 的方式序列化
             stopwatch.Restart();
             for (int i = 0; i < count; i++)
             {
@@ -152,7 +182,7 @@ namespace dotnetcoer_redis_demo
             stopwatch.Stop();
             Console.WriteLine("BinaryFormatter:" + stopwatch.Elapsed.TotalMilliseconds + "毫秒");//总毫秒数
 
-            //[nuget protobuf-net] 的方式序列化
+            //3、[nuget protobuf-net] 的方式序列化
             stopwatch.Restart();
             for (int i = 0; i < count; i++)
             {
