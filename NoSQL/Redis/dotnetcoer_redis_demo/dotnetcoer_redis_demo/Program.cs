@@ -5,6 +5,8 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace dotnetcoer_redis_demo
 {
@@ -34,6 +36,9 @@ namespace dotnetcoer_redis_demo
             db.StringAppend(key, " world"); //追加值
             db.StringIncrement("benny:click");//储存的数字值增一，对应 incr key 命令
             db.StringIncrement("benny:click");
+            db.StringSet("test", "你好");
+            db.StringSet("test", "农码一生");//可以覆盖相同key的值
+            //db.SetAdd("test", "农码一生");//但是不能覆盖不同类型的key的值（这里报错 WRONGTYPE Operation against a key holding the wrong kind of value）
 
             //散列（Hashes）
             db.HashSet("users:benny", "name", "农码一生");// 对应 hset key 命令
@@ -92,7 +97,7 @@ namespace dotnetcoer_redis_demo
             //Lock(分布式锁)
             RedisValue token = Environment.MachineName;
             // 秒杀
-            if (db.LockTake("id", token, TimeSpan.FromSeconds(10)))//10秒自动解锁
+            if (db.LockTake("id", token, TimeSpan.FromSeconds(10)))//10秒自动解锁  【和C#lock最大的区别是，lock会阻塞等待下一个并发。而LockTake不会阻塞，直接运行else】
             {
                 try
                 {
@@ -102,7 +107,7 @@ namespace dotnetcoer_redis_demo
                 {
                     db.LockRelease("id", token);
                 }
-            }
+            }            
 
             #region 测试
             ////测试
