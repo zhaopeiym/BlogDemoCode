@@ -105,3 +105,16 @@
 /NoSQL/Redis/dotnetcoer_redis_demo/dotnetcoer_redis_demo/bin
 /NoSQL/Redis/dotnetcoer_redis_demo/dotnetcoer_redis_demo/obj
 /NoSQL/Redis/dotnetcoer_redis_demo/.vs
+/DynamicWebApi/.vs
+/DynamicWebApi/Application/bin
+/DynamicWebApi/Application/obj
+/DynamicWebApi/DynamicWebApi/obj
+/DynamicWebApi/DynamicWebApi/bin
+/DynamicWebApi/WebApi/bin
+/DynamicWebApi/WebApi/obj
+/依赖注入/DIDemo/DemoLibrary/bin
+/依赖注入/DIDemo/DemoLibrary/obj
+/依赖注入/DIDemo/EFCore/obj
+/依赖注入/DIDemo/EFCore/bin
+/权限管理/1-Forms身份认证/.vs/1-Forms身份认证/v15
+/权限管理/3-ASP.NET Identity/.vs/3-ASP.NET Identity/v15

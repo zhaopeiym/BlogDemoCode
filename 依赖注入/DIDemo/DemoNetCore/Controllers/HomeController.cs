@@ -1,61 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DemoLibrary;
+using EFCore;
 using Microsoft.AspNetCore.Mvc;
-using DemoNetCore.Models;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DemoNetCore.Controllers
 {
-
-    public interface IUser
-    {
-        string GetName();
-    }
-    public class User : IUser, IApplicationService
-    {
-        public string GetName()
-        {
-            return "农码一生";
-        }
-    }
-
-    public interface IUserService
-    {
-        string GetName();
-    }
-
-    public class UserService : IUserService, IApplicationService
-    {
-        private IUser _user;
-        public UserService(IUser user)
-        {
-            _user = user;
-        }
-
-        public string GetName()
-        {
-            return _user.GetName();
-        }
-    }
-
     public class HomeController : Controller
     {
-       
-
-        private readonly IUser _user; 
-        public HomeController(IUser user)
+        BloggingContext bloggingContext;
+        DemoLibrary.TempDemo tempDemo;
+        public HomeController(BloggingContext bloggingContext, DemoLibrary.TempDemo tempDemo)
         {
-            _user = user;
-            var test = _user.GetName();
+            this.bloggingContext = bloggingContext;
+            this.tempDemo = tempDemo;
         }
 
         public IActionResult Index()
         {
+            // 获取类库中的DbContext实例Code
+            var code1 = tempDemo.GetDBHashCode();
+            // 获取web启动项中DbContext实例Code
+            var code2 = bloggingContext.GetHashCode();
+            BloggingContext context = new BloggingContext();
+            var code3 = context.GetHashCode();//获取方法内实例的Code
+
+            var a = code1 == code2;
+            var b = code1 == code3;
+
             return View();
         }
-
-    }
+    }     
 }

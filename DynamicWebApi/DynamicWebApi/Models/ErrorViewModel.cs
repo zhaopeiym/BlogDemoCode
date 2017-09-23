@@ -1,6 +1,6 @@
 using System;
 
-namespace DemoNetCore.Models
+namespace DynamicWebApi.Models
 {
     public class ErrorViewModel
     {

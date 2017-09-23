@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Demo
+namespace DemoLibrary
 {
     public class Demo3
     {
