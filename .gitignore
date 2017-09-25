@@ -118,3 +118,5 @@
 /依赖注入/DIDemo/EFCore/bin
 /权限管理/1-Forms身份认证/.vs/1-Forms身份认证/v15
 /权限管理/3-ASP.NET Identity/.vs/3-ASP.NET Identity/v15
+/EFCoreDemo/obj
+/EFCoreDemo/bin
