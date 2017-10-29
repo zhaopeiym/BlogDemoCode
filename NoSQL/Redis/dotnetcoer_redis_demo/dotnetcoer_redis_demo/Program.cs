@@ -24,6 +24,19 @@ namespace dotnetcoer_redis_demo
             //[nuget StackExchange.Redis.StrongName]
             //ConnectionMultiplexer是线程安全的，且是昂贵的。所以我们应该尽量重用。            
             ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(RedisConnection);
+            for (int i = 0; i < 1000; i++)
+            {
+                try
+                {
+                    var db1 = connectionMultiplexer.GetDatabase();
+                }
+                catch (Exception wx)
+                {
+                    throw;
+                }
+
+            }
+
             var db = connectionMultiplexer.GetDatabase();
 
             //Redis会很快速，所有的东西都在存储器里。但，让Redis闪耀的真正原因是其不同于其它解决方案的特殊数据结构。
