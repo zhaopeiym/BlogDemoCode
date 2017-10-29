@@ -16,7 +16,7 @@ namespace IdentityServer4_SSO_Service.Controllers
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IIdentityServerInteractionService _interaction;
-        private readonly UserManager<IdentityUser> _userManager; 
+        private readonly UserManager<IdentityUser> _userManager;
 
         public AccountController(SignInManager<IdentityUser> signInManager,
             IIdentityServerInteractionService interaction,
@@ -40,7 +40,6 @@ namespace IdentityServer4_SSO_Service.Controllers
             {
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var callbackUrl = EmailConfirmationLink(Url, user.Id, code, Request.Scheme);
-                //await _emailSender.SendEmailConfirmationAsync(Email, callbackUrl);
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return Redirect("/");
             }
@@ -86,14 +85,14 @@ namespace IdentityServer4_SSO_Service.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Logout(string logoutId)
         {
-            var logout = await _interaction.GetLogoutContextAsync(logoutId);            
-            await _signInManager.SignOutAsync(); 
+            var logout = await _interaction.GetLogoutContextAsync(logoutId);
+            await _signInManager.SignOutAsync();
             if (!string.IsNullOrWhiteSpace(logout?.PostLogoutRedirectUri))
             {
                 return Redirect(logout?.PostLogoutRedirectUri);
             }
             return View("Login");
-        } 
+        }
 
         private async Task<string> EmailConfirmationLink(IUrlHelper urlHelper, string userId, string code, string scheme)
         {

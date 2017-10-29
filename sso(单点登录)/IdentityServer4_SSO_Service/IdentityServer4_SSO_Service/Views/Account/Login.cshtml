@@ -9,7 +9,6 @@
 
 @if (User != null && User.Claims.Count() > 0)
 {
-    <a href="/Account/Logout">退出</a>
     <dl>
         @foreach (var claim in User.Claims)
         {

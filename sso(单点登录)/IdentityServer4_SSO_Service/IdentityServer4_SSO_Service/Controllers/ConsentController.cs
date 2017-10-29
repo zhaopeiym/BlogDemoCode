@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using IdentityServer4.Services;
 using IdentityServer4.Models;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace IdentityServer4_SSO_Service.Controllers
 {
     public class ConsentController : Controller
@@ -19,6 +17,11 @@ namespace IdentityServer4_SSO_Service.Controllers
             _interaction = interaction;
         }
 
+        /// <summary>
+        /// 回调，给客户端的信息
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Index(string returnUrl)
         {
             var ScopesConsented = new string[] { "openid", "profile", "api1", "offline_access" };
@@ -30,7 +33,7 @@ namespace IdentityServer4_SSO_Service.Controllers
             var request = await _interaction.GetAuthorizationContextAsync(returnUrl);
             await _interaction.GrantConsentAsync(request, grantedConsent);
 
-            return Redirect(returnUrl);
+            return Redirect(returnUrl);//重定向到Client
         }
     }
 }
