@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@if (User != null && User.Claims.Count() > 0)
+{
+    <a href="/Account/Logout">退出</a>
+    <dl>
+        @foreach (var claim in User.Claims)
+        {
+            <dt>@claim.Type</dt>
+            <dd>@claim.Value</dd>
+        }
+    </dl>
+}
+else
+{
+    <a href="/Account/Login">登录</a>
+    <a href="/Account/Login">注册</a>
+}
+

@@ -1,0 +1,47 @@
+﻿
+<div class="Register">
+    <form action="/Account/Register" method="post">
+        <input type="text" name="Email" />
+        <input type="text" name="Password" />
+        <button type="submit">注册</button>
+    </form>
+</div>
+
+@if (User != null && User.Claims.Count() > 0)
+{
+    <a href="/Account/Logout">退出</a>
+    <dl>
+        @foreach (var claim in User.Claims)
+        {
+            <dt>@claim.Type</dt>
+            <dd>@claim.Value</dd>
+        }
+    </dl>
+}
+else
+{
+    <div class="Login">
+        <form action="/Account/Login" method="post">
+            <input type="hidden" id="ReturnUrl" name="ReturnUrl" />
+            <input type="text" name="Email" />
+            <input type="text" name="Password" />
+            <button type="submit">登录</button>
+        </form>
+    </div>
+
+}
+
+
+<script type="text/javascript">
+    function getQueryStringByName(name) {
+        var result = location.search.match(new RegExp("[\?\&]" + name + "=([^\&]+)", "i"));
+        if (result == null || result.length < 1) {
+            return "";
+        }
+        return result[1];
+    }
+
+    window.onload = function () {
+        document.getElementById("ReturnUrl").value = getQueryStringByName("returnUrl");
+    }
+</script>

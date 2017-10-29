@@ -120,3 +120,9 @@
 /权限管理/3-ASP.NET Identity/.vs/3-ASP.NET Identity/v15
 /EFCoreDemo/obj
 /EFCoreDemo/bin
+/sso(单点登录)/IdentityServer4_SSO_Service/IdentityServer4_SSO_Client1/bin
+/sso(单点登录)/IdentityServer4_SSO_Service/IdentityServer4_SSO_Service/bin
+/sso(单点登录)/IdentityServer4_SSO_Service/IdentityServer4_SSO_Client2/bin
+/sso(单点登录)/IdentityServer4_SSO_Service/IdentityServer4_SSO_Client2/obj
+/sso(单点登录)/IdentityServer4_SSO_Service/IdentityServer4_SSO_Service/obj
+/sso(单点登录)/IdentityServer4_SSO_Service/IdentityServer4_SSO_Client1/obj
