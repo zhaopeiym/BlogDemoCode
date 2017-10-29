@@ -20,7 +20,7 @@ namespace sso_client2.Controllers
                 using (HttpClient http = new HttpClient())
                 {
                     //验证Tokend是否有效
-                    var isValid = await http.GetStringAsync("http://localhost:810/Home/TokenIdIsValid?tokenId=" + tokenId);
+                    var isValid = await http.GetStringAsync("http://localhost:8018/Home/TokenIdIsValid?tokenId=" + tokenId);
                     if (bool.Parse(isValid.ToString()))
                     {
                         if (!Tokens.Contains(tokenId))
@@ -33,7 +33,7 @@ namespace sso_client2.Controllers
             }
             if (Session["token"] == null || !Tokens.Contains(Session["token"].ToString()))
             {
-                return Redirect("http://localhost:810/Home/Verification?backUrl=http://localhost:812/Home");
+                return Redirect("http://localhost:8018/Home/Verification?backUrl=http://localhost:29151/Home");
             }  
             return View();
         }

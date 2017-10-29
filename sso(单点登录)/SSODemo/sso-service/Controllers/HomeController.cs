@@ -51,7 +51,7 @@ namespace sso_service.Controllers
         }
 
         /// <summary>
-        /// 登录验证
+        /// 登录
         /// </summary>
         /// <param name="name"></param>
         /// <param name="passWord"></param>
@@ -62,7 +62,9 @@ namespace sso_service.Controllers
         {
             if (true)//TODO：验证用户名密码登录
             {
-                Session["user"] = "已经登录";
+                //用Session标识会话是登录状态
+                Session["user"] = "XX已经登录";
+                //在认证中心 保存客户端Client的登录认证码
                 TokenIds.Add(Session.SessionID, Guid.NewGuid());
             }
             else//验证失败重新登录
@@ -81,8 +83,8 @@ namespace sso_service.Controllers
 
             using (HttpClient http = new HttpClient())
             {
-                await http.GetAsync("http://localhost:811/Home/ClearToken?tokenId=" + TokenIds[Session.SessionID]);
-                await http.GetAsync("http://localhost:812/Home/ClearToken?tokenId=" + TokenIds[Session.SessionID]);
+                await http.GetAsync("http://localhost:26756/Home/ClearToken?tokenId=" + TokenIds[Session.SessionID]);
+                await http.GetAsync("http://localhost:29151/Home/ClearToken?tokenId=" + TokenIds[Session.SessionID]);
             }
             TokenIds.Remove(Session.SessionID);
             Session["user"] = null;

@@ -14,25 +14,33 @@ namespace sso_client1.Controllers
         public async Task<ActionResult> Index()
         {
             var tokenId = Request.QueryString["tokenId"];
+            //如果tokenId不为空，则是由Service302过来的。
             if (tokenId != null)
             {
                 using (HttpClient http = new HttpClient())
                 {
                     //验证Tokend是否有效
-                    var isValid = await http.GetStringAsync("http://localhost:810/Home/TokenIdIsValid?tokenId=" + tokenId);
+                    var isValid = await http.GetStringAsync("http://localhost:8018/Home/TokenIdIsValid?tokenId=" + tokenId);
                     if (bool.Parse(isValid.ToString()))
                     {
                         if (!Tokens.Contains(tokenId))
                         {
+                            //记录登录过的Client (主要是为了可以统一登出)
                             Tokens.Add(tokenId);
                         }
                         Session["token"] = tokenId;
                     }
                 }
             }
+            //判断是否是登录状态
             if (Session["token"] == null || !Tokens.Contains(Session["token"].ToString()))
             {
-                return Redirect("http://localhost:810/Home/Verification?backUrl=http://localhost:811/Home");
+                return Redirect("http://localhost:8018/Home/Verification?backUrl=http://localhost:26756/Home");
+            }
+            else
+            {
+                if (Session["token"] != null)
+                    Session["token"] = null;
             }
             return View();
         }
