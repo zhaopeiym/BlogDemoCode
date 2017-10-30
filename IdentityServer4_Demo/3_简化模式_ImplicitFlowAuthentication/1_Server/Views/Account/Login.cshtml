@@ -1,0 +1,20 @@
+﻿<form action="/Account/Login" method="post">
+    <input type="text" name="userName" />
+    <input type="text" name="passWord" />
+    <input type="hidden" id="ReturnUrl" name="returnUrl" />
+    <button type="submit">登录</button>
+</form>
+
+<script type="text/javascript">
+    function getQueryStringByName(name) {
+        var result = location.search.match(new RegExp("[\?\&]" + name + "=([^\&]+)", "i"));
+        if (result == null || result.length < 1) {
+            return "";
+        }
+        return result[1];
+    }
+
+    window.onload = function () {
+        document.getElementById("ReturnUrl").value = getQueryStringByName("returnUrl");
+    }
+</script>

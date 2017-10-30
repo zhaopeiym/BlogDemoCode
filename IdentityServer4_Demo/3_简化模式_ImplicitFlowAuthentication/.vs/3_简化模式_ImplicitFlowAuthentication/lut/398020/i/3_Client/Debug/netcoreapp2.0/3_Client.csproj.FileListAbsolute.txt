@@ -1,0 +1,10 @@
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\b\3_Client\Debug\netcoreapp2.0\3_Client.deps.json
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\b\3_Client\Debug\netcoreapp2.0\3_Client.runtimeconfig.json
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\b\3_Client\Debug\netcoreapp2.0\3_Client.runtimeconfig.dev.json
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\b\3_Client\Debug\netcoreapp2.0\3_Client.dll
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\b\3_Client\Debug\netcoreapp2.0\3_Client.pdb
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\i\3_Client\Debug\netcoreapp2.0\3_Client.csproj.CoreCompileInputs.cache
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\i\3_Client\Debug\netcoreapp2.0\3_Client.AssemblyInfoInputs.cache
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\i\3_Client\Debug\netcoreapp2.0\3_Client.AssemblyInfo.cs
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\i\3_Client\Debug\netcoreapp2.0\3_Client.dll
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\i\3_Client\Debug\netcoreapp2.0\3_Client.pdb

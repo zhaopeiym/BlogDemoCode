@@ -1,0 +1,11 @@
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\b\1_Server\Debug\netcoreapp2.0\1_Server.deps.json
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\b\1_Server\Debug\netcoreapp2.0\1_Server.runtimeconfig.json
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\b\1_Server\Debug\netcoreapp2.0\1_Server.runtimeconfig.dev.json
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\b\1_Server\Debug\netcoreapp2.0\1_Server.dll
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\b\1_Server\Debug\netcoreapp2.0\1_Server.pdb
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\i\1_Server\Debug\netcoreapp2.0\1_Server.csprojResolveAssemblyReference.cache
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\i\1_Server\Debug\netcoreapp2.0\1_Server.csproj.CoreCompileInputs.cache
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\i\1_Server\Debug\netcoreapp2.0\1_Server.AssemblyInfoInputs.cache
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\i\1_Server\Debug\netcoreapp2.0\1_Server.AssemblyInfo.cs
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\i\1_Server\Debug\netcoreapp2.0\1_Server.dll
+C:\01Files\MyCode\github\BlogDemoCode\IdentityServer4_Demo\1_客户端模式_ClientCredentials\.vs\1_客户端模式_ClientCredentials\lut\0\i\1_Server\Debug\netcoreapp2.0\1_Server.pdb
