@@ -18,12 +18,6 @@ namespace MvcClient.Controllers
             return View();
         }
 
-        [Authorize]
-        public IActionResult Secure()
-        {
-            return View();
-        }
-
         public async Task Logout()
         {
             await HttpContext.SignOutAsync("Cookies");

@@ -1,0 +1,13 @@
+﻿@model ConsentOutputModel
+<form action="/Consent/Index" method="post">
+    <input type="hidden" id="ReturnUrl" name="returnUrl" value="@Model.ReturnUrl" />
+    @foreach (var item in Model.IdentityScopes)
+    {
+        <div> <input type="checkbox" name="ScopesConsented" value="@item" checked />@item</div>
+    }
+    @foreach (var item in Model.ResourceScopes)
+    {
+        <div> <input type="checkbox" name="ScopesConsented" value="@item" checked />@item</div>
+    }
+    <button type="submit">同意</button>
+</form>

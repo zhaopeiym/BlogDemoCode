@@ -143,3 +143,10 @@
 /IdentityServer4_Demo/1_客户端模式_ClientCredentials/Server/obj
 /IdentityServer4_Demo/3_简化模式_ImplicitFlowAuthentication/1_Server/obj
 /IdentityServer4_Demo/3_简化模式_ImplicitFlowAuthentication/MvcClient/obj
+/IdentityServer4_Demo/4_混合模式_HybridAndApi/MvcClient/bin
+/IdentityServer4_Demo/4_混合模式_HybridAndApi/1_Server/bin
+/IdentityServer4_Demo/4_混合模式_HybridAndApi/Api/bin
+/IdentityServer4_Demo/4_混合模式_HybridAndApi/Api/obj
+/IdentityServer4_Demo/4_混合模式_HybridAndApi/1_Server/obj
+/IdentityServer4_Demo/4_混合模式_HybridAndApi/MvcClient/obj
+/IdentityServer4_Demo/4_混合模式_HybridAndApi/.vs

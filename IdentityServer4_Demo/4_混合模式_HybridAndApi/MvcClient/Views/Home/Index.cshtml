@@ -1,4 +1,11 @@
-﻿<a href="/home/Logout">退出</a>
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<span>我是客户端MvcClient</span>
+<a href="/home/Logout">退出</a>
+<div>
+    <a href="/home/getapi">GetApi</a>
+</div>
 <dl>
     @if (User != null && User.Claims != null)
     {

@@ -36,10 +36,10 @@ namespace MvcClient
             {
                 options.SignInScheme = "Cookies";
 
-                options.Authority = "http://localhost:5000";
+                options.Authority = "http://localhost:5000";//服务端的地址
                 options.RequireHttpsMetadata = false;
 
-                options.ClientId = "client_mvc";
+                options.ClientId = "client_mvc";//需要和服务端颁发的ClientId一致
                 options.SaveTokens = true;
             });
         }

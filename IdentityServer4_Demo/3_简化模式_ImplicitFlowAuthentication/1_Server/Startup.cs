@@ -42,7 +42,7 @@ namespace _1_Server
               .AddInMemoryClients(new List<Client>{
                 new Client
                 {
-                    ClientId = "client_mvc",
+                    ClientId = "client_mvc",//客户端ClientId需要这这里的一致
                     AllowedGrantTypes = GrantTypes.Implicit,//简化模式
                     RedirectUris = { "http://localhost:5002/signin-oidc" },
                     PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
