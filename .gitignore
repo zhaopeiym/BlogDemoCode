@@ -150,3 +150,9 @@
 /IdentityServer4_Demo/4_混合模式_HybridAndApi/1_Server/obj
 /IdentityServer4_Demo/4_混合模式_HybridAndApi/MvcClient/obj
 /IdentityServer4_Demo/4_混合模式_HybridAndApi/.vs
+/切面编程/AOP/DI/bin
+/切面编程/AOP/Web/bin
+/切面编程/AOP/ClassLibrary1/bin
+/切面编程/AOP/DI/obj
+/切面编程/AOP/Web/obj
+/切面编程/AOP/ClassLibrary1/obj
