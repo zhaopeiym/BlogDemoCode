@@ -7,27 +7,86 @@ using System.Web.Mvc;
 
 namespace Web.Controllers
 {
+    public class ClassA
+    {
+        private readonly ClassB b;
+
+        public ClassA(ClassB b)
+        {
+            this.b = b;
+        }
+
+        public void Show()
+        {
+            Console.WriteLine("I am ClassA's instance !");
+        }
+    }
+
+    public class ClassB
+    {
+        public ClassA A { get; set; }
+
+        public void Show()
+        {
+            Console.WriteLine("I am ClassB's instance !");
+        }
+
+    }
+
+    public class ClassC
+    {
+        public string Name { get; set; }
+
+        public ClassD D { get; set; }
+
+        public void Show()
+        {
+            Console.WriteLine("I am ClassC's instance !" + Name);
+        }
+    }
+
+    public class ClassD
+    {
+        public void Show()
+        {
+            Console.WriteLine("I am ClassD's instance !");
+        }
+    }
+
 
     public class TestA
     {
-        public DBContext order2 = null;
-        public TestA(DBContext order)
+        public DBContext order2;
+        public TestA(DBContext order2)
         {
-            order2 = order;
+            order2 = null;
+        }
+    }
+
+    public class TestB: TestA
+    {
+        public TestB(DBContext order2):base(order2)
+        {
+        }
+        public void test()
+        {
+            var obj = order2;
         }
     }
     public class HomeController : Controller
     {
-        private DBContext order;
-        private TestA testA;
-        public HomeController(DBContext order, TestA testA)
+        public DBContext order { get; set; }
+        public TestA testA { get; set; }
+        private TestB testB;
+        public HomeController(TestB testB)
         {
-            this.order = order;
-            this.testA = testA;
+          
+            this.testB = testB;
         }
         public ActionResult Index()
         {
-
+            testB.test();
+            var obj2 = this.order.GetHashCode();
             ViewBag.OrderHashCode = $"{order.GetHashCode() } --  {testA.order2.GetHashCode()}";
             return View();
         }

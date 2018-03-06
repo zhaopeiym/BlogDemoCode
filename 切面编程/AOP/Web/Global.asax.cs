@@ -29,9 +29,18 @@ namespace Web
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterType<TestA>();
+            builder.RegisterType<TestA>().PropertiesAutowired();
+            builder.RegisterType<TestB>().PropertiesAutowired();
             builder.RegisterType<DBContext>().InstancePerLifetimeScope();
+            //builder.RegisterType<HomeController>().PropertiesAutowired();
 
+            builder.RegisterType<ClassD>();
+            var s = builder.RegisterType<ClassC>();
+
+           
+
+      
+           
             //SingleInstance            //单例
             //InstancePerDependency     //每次实例化
             //InstancePerLifetimeScope  //线程内唯一
@@ -41,10 +50,13 @@ namespace Web
             //OnRelease     释放之后
 
             //MVC控制器注入
-            builder.RegisterControllers(Assembly.GetExecutingAssembly());
-            //MVC过滤器注入
+            builder.RegisterControllers(Assembly.GetExecutingAssembly()).PropertiesAutowired();
+            ////MVC过滤器注入
             builder.RegisterFilterProvider();
             var Container = builder.Build();
+
+            //var c = Container.Resolve<HomeController>();
+
             DependencyResolver.SetResolver(new AutofacDependencyResolver(Container));
         }
     }
