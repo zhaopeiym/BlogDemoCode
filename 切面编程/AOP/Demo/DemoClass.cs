@@ -15,7 +15,7 @@ namespace Demo
     //[Intercept(typeof(TestIntercept))]
     public class MyClass
     {
-        [Fact]
+        //[Fact]
         public virtual void MyMethod()
         {
             Test();
