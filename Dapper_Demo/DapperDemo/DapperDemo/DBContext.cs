@@ -85,7 +85,6 @@ namespace DapperDemo
             DbTransaction?.Dispose();
             if (DbConnection.State == ConnectionState.Open)
                 _dbConnection?.Close();
-            _dbConnection?.Dispose();
         }
     }
 }
