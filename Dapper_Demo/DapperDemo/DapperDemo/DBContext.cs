@@ -62,6 +62,8 @@ namespace DapperDemo
         {
             DbTransaction?.Commit();
             Committed = true;
+
+            Dispose();
         }
 
         /// <summary>
@@ -71,6 +73,19 @@ namespace DapperDemo
         {
             DbTransaction?.Rollback();
             Committed = true;
+
+            Dispose();
+        }
+
+        /// <summary>
+        /// 释放
+        /// </summary>
+        public void Dispose()
+        {
+            DbTransaction?.Dispose();
+            if (DbConnection.State == ConnectionState.Open)
+                _dbConnection?.Close();
+            _dbConnection?.Dispose();
         }
     }
 }
