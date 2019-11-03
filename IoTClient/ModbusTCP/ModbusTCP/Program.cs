@@ -17,7 +17,7 @@ namespace ModbusTCP
             Read();
 
             //写入数据
-            //Write();
+            Write();
         }
 
         static void Read()
@@ -132,32 +132,6 @@ namespace ModbusTCP
             values.CopyTo(buffer, 13);                   //把目标值附加到数组后面
             return buffer;
         }
-
-        /// <summary>
-        /// 获取线圈写入命令
-        /// </summary>
-        /// <param name="address">寄存器地址</param>
-        /// <param name="value"></param>
-        /// <param name="stationNumber">站号</param>
-        /// <param name="functionCode">功能码</param>
-        /// <returns></returns>
-        public static byte[] GetWriteCoilCommand(ushort address, bool value, byte stationNumber, byte functionCode)
-        {
-            byte[] buffer = new byte[12];
-            buffer[0] = 0x19;
-            buffer[1] = 0xB2;//Client发出的检验信息     
-            buffer[4] = 0x00;
-            buffer[5] = 0x06;//表示的是该字节以后的字节长度
-
-            buffer[6] = stationNumber;//站号
-            buffer[7] = functionCode; //功能码
-            buffer[8] = BitConverter.GetBytes(address)[1];
-            buffer[9] = BitConverter.GetBytes(address)[0];//寄存器地址
-            buffer[10] = (byte)(value ? 0xFF : 0x00);     //此处只可以是FF表示闭合00表示断开，其他数值非法
-            buffer[11] = 0x00;
-            return buffer;
-        }
-
         #endregion
     }
 }
